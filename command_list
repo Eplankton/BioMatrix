@@ -1,0 +1,9 @@
+exit()#-1
+quit()#-1
+test()#1
+help()#2
+clear()#3
+matrixInput()#4
+matrixDetect()#5
+matrixAddition()#6
+END

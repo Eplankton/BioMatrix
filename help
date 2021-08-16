@@ -1,0 +1,9 @@
+# Manual
+exit() 
+quit()  ~~ Exit the process
+test() ~~ Test the running environment
+help() ~~ Open the manual file
+clear() ~~ Clear the screen
+matrixInput() ~~ To create a matrix as ">> matrixInput(A,row,column)" (No space)
+matrixAddition() ~~ To add two matrixes together ">> matrixAddition(A,B,result)" (No space)
+END
