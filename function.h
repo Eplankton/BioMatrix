@@ -7,7 +7,6 @@ struct matrix
     int row;
     int column;
 };
-
 int search(char *);                           //Compare userInput with the list of command.(0)
 void test();                                  //A test process.(1)
 void help();                                  //Help manual.(2)
@@ -16,8 +15,9 @@ void matrixInput(char *);                     //To input a matrix.(4)
 void matrixDetect(char *);                    //To detect a matrix.(5)
 void matrixExtract(struct matrix *, float *); //To import a matrix from 'matrixstream'.
 int matrixEmploy(struct matrix *);            //To confirm a matrix and return its name/row/column.
-void matrixAddition(char *);                  //To add two matrixes together.(6)
+void matrixAdd(char *);                  //To add two matrixes together.(6)
 void matrixMinus(char *);                     //To minus two matrixes.(7)
+void matrixMulti(char *);                     //To multiply two matrixes together.(8)
 
 int search(char *userInput)
 {
@@ -440,7 +440,7 @@ int matrixEmploy(struct matrix *f)
     return check;
 }
 
-void matrixAddition(char *userInput)
+void matrixAdd(char *userInput)
 {
     struct matrix former;
     struct matrix latter;
@@ -451,175 +451,182 @@ void matrixAddition(char *userInput)
 
     FILE *fp = NULL;
     fp = fopen("matrix", "r+");
-    int j = 0, check = 0;
-    const char cut[2] = ",";
-    const char cap[2] = "(";
-    char *token;
-    char buff[64];
-
-    token = strtok(userInput, cut);
-
-    former.name = strchr(token, '(') + sizeof(char);
-
-    while (token != NULL && j < 2 && fp != NULL)
+    if (fp == NULL)
     {
-        switch (j)
-        {
-        case 0:
-            token = strtok(NULL, cut);
-            latter.name = token;
-            break;
-        case 1:
-            token = strtok(NULL, cut);
-            if (token == 0)
-            {
-                printf("\n[\033[31;1mError\033[0m]:\033[31;1m result.name_invalid\033[0m\n");
-            }
-            else
-            {
-                int i = 0;
-                result.name = token;
-                result.name[strlen(token) - 1] = '\0';
-
-                char bach[strlen(result.name) + 2];
-
-                for (i = 0; i <= strlen(result.name) + 1; i++)
-                {
-                    bach[i] = '0';
-                }
-
-                for (i = 0; i < strlen(result.name) + 1; i++)
-                {
-                    bach[i] = result.name[i];
-                }
-
-                bach[strlen(result.name)] = '<';
-                bach[strlen(result.name) + 1] = '\0';
-
-                while (!feof(fp) && check == 0)
-                {
-                    fgets(buff, 64, (FILE *)fp);
-                    if (strstr(buff, bach) != NULL && check == 0) //Whether userInput is a useable matrixName.
-                    {
-                        printf("\n[\033[31;1mError\033[0m]:\033[31;1m result.name existed\033[0m \033[33;1m<~ %s\033[0m\n", result.name);
-                        check = 1;
-                    }
-                }
-            }
-
-            break;
-        }
-        j++;
-    }
-
-    if (token != 0 && check == 0)
-    {
-        int i = 0, j = 0;
-
-        int check_former = matrixEmploy(p);
-        int check_latter = matrixEmploy(q);
-
-        if (check_former != 0 && check_latter != 0)
-        {
-            if (former.row == latter.row && former.column == latter.column)
-            {
-                float matrixfirst[former.row][former.column];
-                float matrixsecond[latter.row][latter.column];
-                float *arone = &matrixfirst[0][0];
-                float *artwo = &matrixsecond[0][0];
-
-                matrixExtract(p, arone);
-                matrixExtract(q, artwo);
-
-                printf("\n[\033[34;1mMatrix\033[0m]: \033[33;1m%s\033[0m < %d, %d > \n", former.name, former.row, former.column);
-                for (i = 0; i < former.row; i++)
-                {
-                    for (j = 0; j < former.column; j++)
-                    {
-                        if (j != 0)
-                            printf(" %g ", matrixfirst[i][j]);
-                        else
-                            printf("[ %g ", matrixfirst[i][j]);
-                    }
-                    printf("]\n");
-                }
-                printf("\n[\033[34;1mMatrix\033[0m]: \033[33;1m%s\033[0m < %d, %d > \n", latter.name, latter.row, latter.column);
-                for (i = 0; i < latter.row; i++)
-                {
-                    for (j = 0; j < latter.column; j++)
-                    {
-                        if (j != 0)
-                            printf(" %g ", matrixsecond[i][j]);
-                        else
-                            printf("[ %g ", matrixsecond[i][j]);
-                    }
-                    printf("]\n");
-                }
-
-                result.row = former.row;
-                result.column = former.column;
-                float matrixAns[former.row][latter.column];
-
-                printf("\n[\033[34;1mMatrix\033[0m]: \033[33;1m%s\033[0m < %d, %d >\n", result.name, result.row, result.column);
-
-                for (i = 0; i < result.row; i++)
-                {
-                    for (j = 0; j < result.column; j++)
-                    {
-                        matrixAns[i][j] = matrixfirst[i][j] + matrixsecond[i][j];
-                    }
-                }
-
-                for (i = 0; i < result.row; i++)
-                {
-                    for (j = 0; j < result.column; j++)
-                    {
-                        if (j != 0)
-                            printf(" %g ", matrixAns[i][j]);
-                        else
-                            printf("[ %g ", matrixAns[i][j]);
-                    }
-                    printf("]\n");
-                }
-
-                fprintf(fp, "\n%s<%d,%d>\n", result.name, result.row, result.column);
-
-                for (i = 0; i < result.row; i++)
-                {
-                    for (j = 0; j < result.column; j++)
-                    {
-                        if (j == result.column - 1)
-                            fprintf(fp, "%g\n", matrixAns[i][j]);
-                        else
-                            fprintf(fp, "%g ", matrixAns[i][j]);
-                    }
-                }
-                fprintf(fp, "#\n");
-
-                FILE *fstream = NULL;
-                fstream = fopen("matrixstream", "a+");
-                fprintf(fstream, "\n%s<%d,%d>\n", result.name, result.row, result.column);
-                for (i = 0; i < result.row; i++)
-                {
-                    for (j = 0; j < result.column; j++)
-                    {
-                        fprintf(fstream, "%g\n", matrixAns[i][j]);
-                    }
-                }
-                fprintf(fstream, "#\n");
-                fclose(fstream);
-            }
-            else
-            {
-                printf("\n[\033[31;1mError\033[0m]:\033[31;1m row/column not equal\033[0m\n");
-            }
-        }
+        printf("\n[\033[31;1mError\033[0m]:\033[31;1m No matrix exists\033[0m\n");
     }
     else
     {
-        printf("\n[\033[36;1mHelp\033[0m]:\033[37;1m >> matrixAddition(A,B,result)\033[0m\n");
+        int j = 0, check = 0;
+        const char cut[2] = ",";
+        const char cap[2] = "(";
+        char *token;
+        char buff[64];
+
+        token = strtok(userInput, cut);
+
+        former.name = strchr(token, '(') + sizeof(char);
+
+        while (token != NULL && j < 2 && fp != NULL)
+        {
+            switch (j)
+            {
+            case 0:
+                token = strtok(NULL, cut);
+                latter.name = token;
+                break;
+            case 1:
+                token = strtok(NULL, cut);
+                if (token == 0)
+                {
+                    printf("\n[\033[31;1mError\033[0m]:\033[31;1m result.name_invalid\033[0m\n");
+                }
+                else
+                {
+                    int i = 0;
+                    result.name = token;
+                    result.name[strlen(token) - 1] = '\0';
+
+                    char bach[strlen(result.name) + 2];
+
+                    for (i = 0; i <= strlen(result.name) + 1; i++)
+                    {
+                        bach[i] = '0';
+                    }
+
+                    for (i = 0; i < strlen(result.name) + 1; i++)
+                    {
+                        bach[i] = result.name[i];
+                    }
+
+                    bach[strlen(result.name)] = '<';
+                    bach[strlen(result.name) + 1] = '\0';
+
+                    while (!feof(fp) && check == 0)
+                    {
+                        fgets(buff, 64, (FILE *)fp);
+                        if (strstr(buff, bach) != NULL && check == 0) //Whether userInput is a useable matrixName.
+                        {
+                            printf("\n[\033[31;1mError\033[0m]:\033[31;1m result.name existed\033[0m \033[33;1m<~ %s\033[0m\n", result.name);
+                            check = 1;
+                        }
+                    }
+                }
+
+                break;
+            }
+            j++;
+        }
+
+        if (token != 0 && check == 0)
+        {
+            int i = 0, j = 0;
+
+            int check_former = matrixEmploy(p);
+            int check_latter = matrixEmploy(q);
+
+            if (check_former != 0 && check_latter != 0)
+            {
+                if (former.row == latter.row && former.column == latter.column)
+                {
+                    float matrixfirst[former.row][former.column];
+                    float matrixsecond[latter.row][latter.column];
+                    float *arone = &matrixfirst[0][0];
+                    float *artwo = &matrixsecond[0][0];
+
+                    matrixExtract(p, arone);
+                    matrixExtract(q, artwo);
+
+                    printf("\n[\033[34;1mMatrix\033[0m]: \033[33;1m%s\033[0m < %d, %d > \n", former.name, former.row, former.column);
+                    for (i = 0; i < former.row; i++)
+                    {
+                        for (j = 0; j < former.column; j++)
+                        {
+                            if (j != 0)
+                                printf(" %g ", matrixfirst[i][j]);
+                            else
+                                printf("[ %g ", matrixfirst[i][j]);
+                        }
+                        printf("]\n");
+                    }
+                    printf("\n[\033[34;1mMatrix\033[0m]: \033[33;1m%s\033[0m < %d, %d > \n", latter.name, latter.row, latter.column);
+                    for (i = 0; i < latter.row; i++)
+                    {
+                        for (j = 0; j < latter.column; j++)
+                        {
+                            if (j != 0)
+                                printf(" %g ", matrixsecond[i][j]);
+                            else
+                                printf("[ %g ", matrixsecond[i][j]);
+                        }
+                        printf("]\n");
+                    }
+
+                    result.row = former.row;
+                    result.column = former.column;
+                    float matrixAns[former.row][latter.column];
+
+                    printf("\n[\033[34;1mMatrix\033[0m]: \033[33;1m%s\033[0m < %d, %d >\n", result.name, result.row, result.column);
+
+                    for (i = 0; i < result.row; i++)
+                    {
+                        for (j = 0; j < result.column; j++)
+                        {
+                            matrixAns[i][j] = matrixfirst[i][j] + matrixsecond[i][j];
+                        }
+                    }
+
+                    for (i = 0; i < result.row; i++)
+                    {
+                        for (j = 0; j < result.column; j++)
+                        {
+                            if (j != 0)
+                                printf(" %g ", matrixAns[i][j]);
+                            else
+                                printf("[ %g ", matrixAns[i][j]);
+                        }
+                        printf("]\n");
+                    }
+
+                    fprintf(fp, "\n%s<%d,%d>\n", result.name, result.row, result.column);
+
+                    for (i = 0; i < result.row; i++)
+                    {
+                        for (j = 0; j < result.column; j++)
+                        {
+                            if (j == result.column - 1)
+                                fprintf(fp, "%g\n", matrixAns[i][j]);
+                            else
+                                fprintf(fp, "%g ", matrixAns[i][j]);
+                        }
+                    }
+                    fprintf(fp, "#\n");
+
+                    FILE *fstream = NULL;
+                    fstream = fopen("matrixstream", "a+");
+                    fprintf(fstream, "\n%s<%d,%d>\n", result.name, result.row, result.column);
+                    for (i = 0; i < result.row; i++)
+                    {
+                        for (j = 0; j < result.column; j++)
+                        {
+                            fprintf(fstream, "%g\n", matrixAns[i][j]);
+                        }
+                    }
+                    fprintf(fstream, "#\n");
+                    fclose(fstream);
+                }
+                else
+                {
+                    printf("\n[\033[31;1mError\033[0m]:\033[31;1m row/column not equal\033[0m\n");
+                }
+            }
+        }
+        else
+        {
+            printf("\n[\033[36;1mHelp\033[0m]:\033[37;1m >> matrixAdd(A,B,result)\033[0m\n");
+        }
+        fclose(fp);
     }
-    fclose(fp);
 }
 
 void matrixMinus(char *userInput)
@@ -633,173 +640,374 @@ void matrixMinus(char *userInput)
 
     FILE *fp = NULL;
     fp = fopen("matrix", "r+");
-    int j = 0, check = 0;
-    const char cut[2] = ",";
-    const char cap[2] = "(";
-    char *token;
-    char buff[64];
-
-    token = strtok(userInput, cut);
-
-    former.name = strchr(token, '(') + sizeof(char);
-
-    while (token != NULL && j < 2)
+    if (fp == NULL)
     {
-        switch (j)
-        {
-        case 0:
-            token = strtok(NULL, cut);
-            latter.name = token;
-            break;
-        case 1:
-            token = strtok(NULL, cut);
-            if (token == 0)
-            {
-                printf("\n[\033[31;1mError\033[0m]:\033[31;1m result.name_invalid\033[0m\n");
-            }
-            else
-            {
-                int i = 0;
-                result.name = token;
-                result.name[strlen(token) - 1] = '\0';
-
-                char bach[strlen(result.name) + 2];
-
-                for (i = 0; i <= strlen(result.name) + 1; i++)
-                {
-                    bach[i] = '0';
-                }
-
-                for (i = 0; i < strlen(result.name) + 1; i++)
-                {
-                    bach[i] = result.name[i];
-                }
-
-                bach[strlen(result.name)] = '<';
-                bach[strlen(result.name) + 1] = '\0';
-
-                while (!feof(fp) && check == 0)
-                {
-                    fgets(buff, 64, (FILE *)fp);
-                    if (strstr(buff, bach) != NULL && check == 0) //Whether userInput is a useable matrixName.
-                    {
-                        printf("\n[\033[31;1mError\033[0m]:\033[31;1m result.name existed\033[0m \033[33;1m<~ %s\033[0m\n", result.name);
-                        check = 1;
-                    }
-                }
-            }
-
-            break;
-        }
-        j++;
-    }
-
-    if (token != 0 && check == 0)
-    {
-        int i = 0, j = 0;
-
-        int check_former = matrixEmploy(p);
-        int check_latter = matrixEmploy(q);
-
-        if (check_former != 0 && check_latter != 0)
-        {
-            if (former.row == latter.row && former.column == latter.column)
-            {
-                float matrixfirst[former.row][former.column];
-                float matrixsecond[latter.row][latter.column];
-                float *arone = &matrixfirst[0][0];
-                float *artwo = &matrixsecond[0][0];
-
-                matrixExtract(p, arone);
-                matrixExtract(q, artwo);
-
-                printf("\n[\033[34;1mMatrix\033[0m]: \033[33;1m%s\033[0m < %d, %d > \n", former.name, former.row, former.column);
-                for (i = 0; i < former.row; i++)
-                {
-                    for (j = 0; j < former.column; j++)
-                    {
-                        if (j != 0)
-                            printf(" %g ", matrixfirst[i][j]);
-                        else
-                            printf("[ %g ", matrixfirst[i][j]);
-                    }
-                    printf("]\n");
-                }
-                printf("\n[\033[34;1mMatrix\033[0m]: \033[33;1m%s\033[0m < %d, %d > \n", latter.name, latter.row, latter.column);
-                for (i = 0; i < latter.row; i++)
-                {
-                    for (j = 0; j < latter.column; j++)
-                    {
-                        if (j != 0)
-                            printf(" %g ", matrixsecond[i][j]);
-                        else
-                            printf("[ %g ", matrixsecond[i][j]);
-                    }
-                    printf("]\n");
-                }
-
-                result.row = former.row;
-                result.column = former.column;
-                float matrixAns[former.row][latter.column];
-
-                printf("\n[\033[34;1mMatrix\033[0m]: \033[33;1m%s\033[0m < %d, %d >\n", result.name, result.row, result.column);
-
-                for (i = 0; i < result.row; i++)
-                {
-                    for (j = 0; j < result.column; j++)
-                    {
-                        matrixAns[i][j] = matrixfirst[i][j] - matrixsecond[i][j];
-                    }
-                }
-
-                for (i = 0; i < result.row; i++)
-                {
-                    for (j = 0; j < result.column; j++)
-                    {
-                        if (j != 0)
-                            printf(" %g ", matrixAns[i][j]);
-                        else
-                            printf("[ %g ", matrixAns[i][j]);
-                    }
-                    printf("]\n");
-                }
-
-                fprintf(fp, "\n\n%s<%d,%d>\n", result.name, result.row, result.column);
-
-                for (i = 0; i < result.row; i++)
-                {
-                    for (j = 0; j < result.column; j++)
-                    {
-                        if (j == result.column - 1)
-                            fprintf(fp, "%g\n", matrixAns[i][j]);
-                        else
-                            fprintf(fp, "%g ", matrixAns[i][j]);
-                    }
-                }
-                fprintf(fp, "#\n");
-
-                FILE *fstream = NULL;
-                fstream = fopen("matrixstream", "a+");
-                fprintf(fstream, "\n\n%s<%d,%d>\n", result.name, result.row, result.column);
-                for (i = 0; i < result.row; i++)
-                {
-                    for (j = 0; j < result.column; j++)
-                    {
-                        fprintf(fstream, "%g\n", matrixAns[i][j]);
-                    }
-                }
-                fprintf(fstream, "#\n");
-                fclose(fstream);
-            }
-            else
-            {
-                printf("\n[\033[31;1mError\033[0m]:\033[31;1m row/column not equal\033[0m\n");
-            }
-        }
+        printf("\n[\033[31;1mError\033[0m]:\033[31;1m No matrix exists\033[0m\n");
     }
     else
     {
-        printf("\n[\033[36;1mHelp\033[0m]:\033[37;1m >> matrixAddition(A,B,result)\033[0m\n");
+        int j = 0, check = 0;
+        const char cut[2] = ",";
+        const char cap[2] = "(";
+        char *token;
+        char buff[64];
+
+        token = strtok(userInput, cut);
+
+        former.name = strchr(token, '(') + sizeof(char);
+
+        while (token != NULL && j < 2)
+        {
+            switch (j)
+            {
+            case 0:
+                token = strtok(NULL, cut);
+                latter.name = token;
+                break;
+            case 1:
+                token = strtok(NULL, cut);
+                if (token == 0)
+                {
+                    printf("\n[\033[31;1mError\033[0m]:\033[31;1m result.name_invalid\033[0m\n");
+                }
+                else
+                {
+                    int i = 0;
+                    result.name = token;
+                    result.name[strlen(token) - 1] = '\0';
+
+                    char bach[strlen(result.name) + 2];
+
+                    for (i = 0; i <= strlen(result.name) + 1; i++)
+                    {
+                        bach[i] = '0';
+                    }
+
+                    for (i = 0; i < strlen(result.name) + 1; i++)
+                    {
+                        bach[i] = result.name[i];
+                    }
+
+                    bach[strlen(result.name)] = '<';
+                    bach[strlen(result.name) + 1] = '\0';
+
+                    while (!feof(fp) && check == 0)
+                    {
+                        fgets(buff, 64, (FILE *)fp);
+                        if (strstr(buff, bach) != NULL && check == 0) //Whether userInput is a useable matrixName.
+                        {
+                            printf("\n[\033[31;1mError\033[0m]:\033[31;1m result.name existed\033[0m \033[33;1m<~ %s\033[0m\n", result.name);
+                            check = 1;
+                        }
+                    }
+                }
+
+                break;
+            }
+            j++;
+        }
+
+        if (token != 0 && check == 0)
+        {
+            int i = 0, j = 0;
+
+            int check_former = matrixEmploy(p);
+            int check_latter = matrixEmploy(q);
+
+            if (check_former != 0 && check_latter != 0)
+            {
+                if (former.row == latter.row && former.column == latter.column)
+                {
+                    float matrixfirst[former.row][former.column];
+                    float matrixsecond[latter.row][latter.column];
+                    float *arone = &matrixfirst[0][0];
+                    float *artwo = &matrixsecond[0][0];
+
+                    matrixExtract(p, arone);
+                    matrixExtract(q, artwo);
+
+                    printf("\n[\033[34;1mMatrix\033[0m]: \033[33;1m%s\033[0m < %d, %d > \n", former.name, former.row, former.column);
+                    for (i = 0; i < former.row; i++)
+                    {
+                        for (j = 0; j < former.column; j++)
+                        {
+                            if (j != 0)
+                                printf(" %g ", matrixfirst[i][j]);
+                            else
+                                printf("[ %g ", matrixfirst[i][j]);
+                        }
+                        printf("]\n");
+                    }
+                    printf("\n[\033[34;1mMatrix\033[0m]: \033[33;1m%s\033[0m < %d, %d > \n", latter.name, latter.row, latter.column);
+                    for (i = 0; i < latter.row; i++)
+                    {
+                        for (j = 0; j < latter.column; j++)
+                        {
+                            if (j != 0)
+                                printf(" %g ", matrixsecond[i][j]);
+                            else
+                                printf("[ %g ", matrixsecond[i][j]);
+                        }
+                        printf("]\n");
+                    }
+
+                    result.row = former.row;
+                    result.column = former.column;
+                    float matrixAns[former.row][latter.column];
+
+                    printf("\n[\033[34;1mMatrix\033[0m]: \033[33;1m%s\033[0m < %d, %d >\n", result.name, result.row, result.column);
+
+                    for (i = 0; i < result.row; i++)
+                    {
+                        for (j = 0; j < result.column; j++)
+                        {
+                            matrixAns[i][j] = matrixfirst[i][j] - matrixsecond[i][j];
+                        }
+                    }
+
+                    for (i = 0; i < result.row; i++)
+                    {
+                        for (j = 0; j < result.column; j++)
+                        {
+                            if (j != 0)
+                                printf(" %g ", matrixAns[i][j]);
+                            else
+                                printf("[ %g ", matrixAns[i][j]);
+                        }
+                        printf("]\n");
+                    }
+
+                    fprintf(fp, "\n\n%s<%d,%d>\n", result.name, result.row, result.column);
+
+                    for (i = 0; i < result.row; i++)
+                    {
+                        for (j = 0; j < result.column; j++)
+                        {
+                            if (j == result.column - 1)
+                                fprintf(fp, "%g\n", matrixAns[i][j]);
+                            else
+                                fprintf(fp, "%g ", matrixAns[i][j]);
+                        }
+                    }
+                    fprintf(fp, "#\n");
+
+                    FILE *fstream = NULL;
+                    fstream = fopen("matrixstream", "a+");
+                    fprintf(fstream, "\n\n%s<%d,%d>\n", result.name, result.row, result.column);
+                    for (i = 0; i < result.row; i++)
+                    {
+                        for (j = 0; j < result.column; j++)
+                        {
+                            fprintf(fstream, "%g\n", matrixAns[i][j]);
+                        }
+                    }
+                    fprintf(fstream, "#\n");
+                    fclose(fstream);
+                }
+                else
+                {
+                    printf("\n[\033[31;1mError\033[0m]:\033[31;1m row/column not equal\033[0m\n");
+                }
+            }
+        }
+        else
+        {
+            printf("\n[\033[36;1mHelp\033[0m]:\033[37;1m >> matrixMinus(A,B,result)\033[0m\n");
+        }
+        fclose(fp);
     }
-    fclose(fp);
+}
+
+void matrixMulti(char *userInput)
+{
+    struct matrix former;
+    struct matrix latter;
+    struct matrix result;
+
+    struct matrix *p = &former;
+    struct matrix *q = &latter;
+
+    FILE *fp = NULL;
+    fp = fopen("matrix", "r+");
+    if (fp == NULL)
+    {
+        printf("\n[\033[31;1mError\033[0m]:\033[31;1m No matrix exists\033[0m\n");
+    }
+    else
+    {
+        int j = 0, check = 0;
+        const char cut[2] = ",";
+        const char cap[2] = "(";
+        char *token;
+        char buff[64];
+
+        token = strtok(userInput, cut);
+
+        former.name = strchr(token, '(') + sizeof(char);
+
+        while (token != NULL && j < 2)
+        {
+            switch (j)
+            {
+            case 0:
+                token = strtok(NULL, cut);
+                latter.name = token;
+                break;
+            case 1:
+                token = strtok(NULL, cut);
+                if (token == 0)
+                {
+                    printf("\n[\033[31;1mError\033[0m]:\033[31;1m result.name_invalid\033[0m\n");
+                }
+                else
+                {
+                    int i = 0;
+                    result.name = token;
+                    result.name[strlen(token) - 1] = '\0';
+
+                    char bach[strlen(result.name) + 2];
+
+                    for (i = 0; i <= strlen(result.name) + 1; i++)
+                    {
+                        bach[i] = '0';
+                    }
+
+                    for (i = 0; i < strlen(result.name) + 1; i++)
+                    {
+                        bach[i] = result.name[i];
+                    }
+
+                    bach[strlen(result.name)] = '<';
+                    bach[strlen(result.name) + 1] = '\0';
+
+                    while (!feof(fp) && check == 0)
+                    {
+                        fgets(buff, 64, (FILE *)fp);
+                        if (strstr(buff, bach) != NULL && check == 0) //Whether userInput is a useable matrixName.
+                        {
+                            printf("\n[\033[31;1mError\033[0m]:\033[31;1m result.name existed\033[0m \033[33;1m<~ %s\033[0m\n", result.name);
+                            check = 1;
+                        }
+                    }
+                }
+
+                break;
+            }
+            j++;
+        }
+
+        if (token != 0 && check == 0)
+        {
+            int i = 0, j = 0;
+
+            int check_former = matrixEmploy(p);
+            int check_latter = matrixEmploy(q);
+
+            if (check_former != 0 && check_latter != 0)
+            {
+                if (former.column == latter.row)
+                {
+                    float matrixfirst[former.row][former.column];
+                    float matrixsecond[latter.row][latter.column];
+                    float *arone = &matrixfirst[0][0];
+                    float *artwo = &matrixsecond[0][0];
+
+                    matrixExtract(p, arone);
+                    matrixExtract(q, artwo);
+
+                    printf("\n[\033[34;1mMatrix\033[0m]: \033[33;1m%s\033[0m < %d, %d > \n", former.name, former.row, former.column);
+                    for (i = 0; i < former.row; i++)
+                    {
+                        for (j = 0; j < former.column; j++)
+                        {
+                            if (j != 0)
+                                printf(" %g ", matrixfirst[i][j]);
+                            else
+                                printf("[ %g ", matrixfirst[i][j]);
+                        }
+                        printf("]\n");
+                    }
+                    printf("\n[\033[34;1mMatrix\033[0m]: \033[33;1m%s\033[0m < %d, %d > \n", latter.name, latter.row, latter.column);
+                    for (i = 0; i < latter.row; i++)
+                    {
+                        for (j = 0; j < latter.column; j++)
+                        {
+                            if (j != 0)
+                                printf(" %g ", matrixsecond[i][j]);
+                            else
+                                printf("[ %g ", matrixsecond[i][j]);
+                        }
+                        printf("]\n");
+                    }
+
+                    result.row = former.row;
+                    result.column = latter.column;
+                    float matrixAns[former.row][latter.column];
+
+                    printf("\n[\033[34;1mMatrix\033[0m]: \033[33;1m%s\033[0m < %d, %d >\n", result.name, result.row, result.column);
+
+                    int c = 0;
+
+                    for (i = 0; i < former.row; i++)
+                    {
+                        for (j = 0; j < latter.column; j++)
+                        {
+                            for (c = 0; c < former.column; c++)
+                            {
+                                matrixAns[i][j] += (matrixfirst[i][c] * matrixsecond[c][j]);
+                            }
+                        }
+                    }
+
+                    for (i = 0; i < result.row; i++)
+                    {
+                        for (j = 0; j < result.column; j++)
+                        {
+                            if (j != 0)
+                                printf(" %g ", matrixAns[i][j]);
+                            else
+                                printf("[ %g ", matrixAns[i][j]);
+                        }
+                        printf("]\n");
+                    }
+
+                    fprintf(fp, "\n\n%s<%d,%d>\n", result.name, result.row, result.column);
+
+                    for (i = 0; i < result.row; i++)
+                    {
+                        for (j = 0; j < result.column; j++)
+                        {
+                            if (j == result.column - 1)
+                                fprintf(fp, "%g\n", matrixAns[i][j]);
+                            else
+                                fprintf(fp, "%g ", matrixAns[i][j]);
+                        }
+                    }
+                    fprintf(fp, "#\n");
+
+                    FILE *fstream = NULL;
+                    fstream = fopen("matrixstream", "a+");
+                    fprintf(fstream, "\n\n%s<%d,%d>\n", result.name, result.row, result.column);
+                    for (i = 0; i < result.row; i++)
+                    {
+                        for (j = 0; j < result.column; j++)
+                        {
+                            fprintf(fstream, "%g\n", matrixAns[i][j]);
+                        }
+                    }
+                    fprintf(fstream, "#\n");
+                    fclose(fstream);
+                }
+                else
+                {
+                    printf("\n[\033[31;1mError\033[0m]:\033[37;1m A<i,n> x B<n,j> = C<i,j>\033[0m\n");
+                }
+            }
+        }
+        else
+        {
+            printf("\n[\033[36;1mHelp\033[0m]:\033[37;1m >> matrixAdd(A,B,result)\033[0m\n");
+        }
+        fclose(fp);
+    }
 }

@@ -5,6 +5,7 @@ help()#2
 clear()#3
 matrixInput()#4
 matrixDetect()#5
-matrixAddition()#6
+matrixAdd()#6
 matrixMinus()#7
+matrixMulti()#8
 END

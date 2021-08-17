@@ -45,14 +45,17 @@ int main()
             key = 0;
             break;
         case 6:
-            matrixAddition(userInput);
+            matrixAdd(userInput);
             key = 0;
             break;
         case 7:
             matrixMinus(userInput);
             key = 0;
             break;
-
+        case 8:
+            matrixMulti(userInput);
+            key = 0;
+            break;
             //Add cases here.
 
         case 0: //Confirm the order {search()}
