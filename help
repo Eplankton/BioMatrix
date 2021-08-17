@@ -9,4 +9,5 @@ matrixInput() ~~ To create a matrix as ">> matrixInput(Name,row,column)" (No spa
 matrixAdd() ~~ To add two matrixes together ">> matrixAdd(Name1,Name2,result.Name)" (No space)
 matrixMinus() ~~ To minus two matrixes ">> matrixMinus(Name1,Name2,result.Name)" (No space)
 matrixMulti() ~~ To multiply two matrixes together">> matrixMulti(Name1,Name2,result.Name)" (No space)
+matrixTran() ~~ To transpose a matrix "matrixTran(Name,result.Name)" (No space)
 END

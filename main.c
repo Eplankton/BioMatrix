@@ -56,6 +56,11 @@ int main()
             matrixMulti(userInput);
             key = 0;
             break;
+        case 9:
+            matrixTran(userInput);
+            key = 0;
+            break;
+            
             //Add cases here.
 
         case 0: //Confirm the order {search()}
