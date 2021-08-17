@@ -1,4 +1,4 @@
-//From: Eplankton Date: 2021/8/17
+//From: Eplankton Date: 2021/8/12
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
@@ -46,6 +46,10 @@ int main()
             break;
         case 6:
             matrixAddition(userInput);
+            key = 0;
+            break;
+        case 7:
+            matrixMinus(userInput);
             key = 0;
             break;
 

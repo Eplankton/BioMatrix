@@ -5,6 +5,7 @@ test() ~~ Test the running environment
 help() ~~ Open the manual file
 clear() ~~ Clear the screen
 matrixDetect() ~~ To detect whether a matrix has existed or not ">> matrixDetect(A)" (No space)
-matrixInput() ~~ To create a matrix as ">> matrixInput(A,row,column)" (No space)
-matrixAddition() ~~ To add two matrixes together ">> matrixAddition(A,B,result)" (No space)
+matrixInput() ~~ To create a matrix as ">> matrixInput(Name,row,column)" (No space)
+matrixAddition() ~~ To add two matrixes together ">> matrixAddition(Name1,Name2,result.Name)" (No space)
+matrixMinus() ~~ To minus two matrixes ">> matrixAddition(Name1,Name2,result.Name)" (No space)
 END

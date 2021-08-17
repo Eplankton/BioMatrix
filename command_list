@@ -6,4 +6,5 @@ clear()#3
 matrixInput()#4
 matrixDetect()#5
 matrixAddition()#6
+matrixMinus()#7
 END
