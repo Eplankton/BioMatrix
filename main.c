@@ -12,7 +12,7 @@ int main()
     time(&rawtime);
     info = localtime(&rawtime);
 
-    printf("\n\033[32;1mBioMatrix\033[0m v0.0.1 %sType help() for manual information.\n", asctime(info)); //System.time & version
+    printf("\n\033[32;1mBioMatrix\033[0m v0.0.1 %sType 'help()' for manual information.\n", asctime(info)); //System.time & version
 
     int key = 0;
 
@@ -52,6 +52,8 @@ int main()
             //Add cases here.
 
         case 0: //Confirm the order {search()}
+            while (getchar() != '\n')
+                ;
             break;
 
         case -1: //Exit the process(-1) {exit() & quit()}

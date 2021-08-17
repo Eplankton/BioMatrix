@@ -1,9 +1,10 @@
 # Manual
-exit() 
+exit()  ~~ Exit the process
 quit()  ~~ Exit the process
 test() ~~ Test the running environment
 help() ~~ Open the manual file
 clear() ~~ Clear the screen
+matrixDetect() ~~ To detect whether a matrix has existed or not ">> matrixDetect(A)" (No space)
 matrixInput() ~~ To create a matrix as ">> matrixInput(A,row,column)" (No space)
 matrixAddition() ~~ To add two matrixes together ">> matrixAddition(A,B,result)" (No space)
 END
