@@ -1,4 +1,4 @@
-//From: Eplankton Date: 2021/8/17
+//From: Eplankton  Date: 2021/8/17
 char userInput[64];
 char cushion;
 struct matrix
