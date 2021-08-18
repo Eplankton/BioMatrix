@@ -14,10 +14,15 @@ int main()
 
     printf("\n\033[32;1mBioMatrix\033[0m v0.0.1 %sType 'help()' for manual information.\n", asctime(info)); //System.time & version
 
-    int key = 0;
+    int key = 0, i = 0;
+    char userInput[64];
 
     while (key >= 0)
     {
+        for (i = 0; i < 63; i++)
+        {
+            userInput[i] = '0';
+        }
         printf("\n\033[33;1m>> \033[0m");
         scanf("%s", userInput);
         key = search(userInput);
@@ -60,7 +65,7 @@ int main()
             matrixTran(userInput);
             key = 0;
             break;
-            
+
             //Add cases here.
 
         case 0: //Confirm the order {search()}
