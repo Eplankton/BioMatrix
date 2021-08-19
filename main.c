@@ -21,7 +21,7 @@ int main()
     {
         for (i = 0; i < 63; i++)
         {
-            userInput[i] = '0';
+            userInput[i] = '\0';
         }
         printf("\n\033[33;1m>> \033[0m");
         scanf("%s", userInput);
