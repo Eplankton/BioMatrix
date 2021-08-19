@@ -23,6 +23,8 @@ int main()
         {
             userInput[i] = '\0';
         }
+        i = 0;
+
         printf("\n\033[33;1m>> \033[0m");
         scanf("%s", userInput);
         key = search(userInput);
@@ -63,6 +65,10 @@ int main()
             break;
         case 9:
             matrixTran(userInput);
+            key = 0;
+            break;
+        case 10:
+            matrixScal(userInput);
             key = 0;
             break;
 

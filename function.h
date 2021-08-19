@@ -5,6 +5,7 @@ struct matrix
     int row;
     int column;
 };
+
 int search(char *);                           //Compare userInput with the list of command.(0)
 void test();                                  //A test process.(1)
 void help();                                  //Help manual.(2)
@@ -17,6 +18,7 @@ void matrixAdd(char *);                       //To add two matrixes together.(6)
 void matrixMinus(char *);                     //To minus two matrixes.(7)
 void matrixMulti(char *);                     //To multiply two matrixes together.(8)
 void matrixTran(char *);                      //To transpose a matrix.(9)
+void matrixScal(char *);                      //To scalar multiplay a matrix.(10)
 
 int search(char *userInput)
 {
@@ -103,8 +105,7 @@ void help()
     while (strcmp(buff, "END") != 0)
     {
         fgets(buff, 128, (FILE *)fp);
-        const char t[2] = ")";
-        printf("\n\033[32m    %s\033\n", buff);
+        printf("\n\033[37m  %s\033\n", buff);
     }
 }
 
@@ -118,7 +119,7 @@ void matrixInput(char *userInput)
 {
     FILE *fp = NULL;
     fp = fopen("matrix", "a+");
-    int i = 0, j = 0, row = 0, column = 0, cnt = 0;
+    int i = 0, j = 0, row = 0, column = 0, cnt = 0, len = 0;
     const char cut[2] = ",";
     const char cap[2] = "(";
     char *token;
@@ -180,8 +181,8 @@ void matrixInput(char *userInput)
             while (!feof(fp) && check == 0)
             {
                 fgets(buff, 64, (FILE *)fp);
-
-                if (strstr(buff, bach) != NULL && check == 0) //Whether userInput is a useable matrixName.
+                len = strlen(bach);
+                if (strncmp(buff, bach, len) == 0 && check == 0) //Whether userInput is a useable matrixName.
                 {
                     printf("\n[\033[31;1mError\033[0m]:\033[31;1m Matrix Existed\033[0m \033[33;1m<~ %s\033[0m\n", strtok(matrixName, ")"));
                     check = 1;
@@ -196,13 +197,12 @@ void matrixInput(char *userInput)
             {
                 fclose(fp);
                 fp = fopen("matrix", "r");
-                int len = 0;
-                len = strlen(matrixName);
 
                 while (!feof(fp) && check != 0)
                 {
                     fgets(buff, 64, (FILE *)fp);
-                    if (strncmp(buff, matrixName, len) == 0 && check != 0)
+                    len = strlen(bach);
+                    if (strncmp(buff, bach, len) == 0 && check == 0)
                     {
                         printf("\n\033[31;1mHere:\033[0m\n\n");
                         check = 0;
@@ -340,7 +340,8 @@ void matrixDetect(char *userInput)
             while (!feof(fp) && check == 0)
             {
                 fgets(buff, 64, (FILE *)fp);
-                if (strstr(buff, matrixName) != NULL && check == 0 && buff[0] == matrixName[0])
+                len = strlen(matrixName);
+                if (strncmp(buff, matrixName, len) == 0 && check == 0)
                 {
                     printf("\n\033[34;1mHere:\033[0m\n");
                     check = 1;
@@ -381,11 +382,10 @@ void matrixExtract(struct matrix *f, float *array)
         buff[k] = '\0';
     }
     char *matrixName;
-    int check = 0;
-    int number = 0;
+    int check = 0, number = 0;
     matrixName = f->name;
 
-    if (matrixName != 0)
+    if (matrixName[0] != '\0')
     {
         fclose(fstream);
         fstream = fopen("matrixstream", "r");
@@ -454,7 +454,6 @@ int matrixEmploy(struct matrix *f)
     char *matrixName;
     char *token;
     char *temp;
-    char bach[2] = "<";
     int check = 0, i = 0, j = 0;
     matrixName = f->name;
     char prov[strlen(matrixName) + 2];
@@ -480,7 +479,8 @@ int matrixEmploy(struct matrix *f)
         while (!feof(fp) && check == 0)
         {
             fgets(buff, 32, (FILE *)fp);
-            if (strstr(buff, prov) != NULL && check == 0 && prov[0] == buff[0])
+            int len = strlen(prov);
+            if (strncmp(buff, prov, len) == 0 && check == 0)
             {
                 check = 1;
                 token = strtok(buff, ",");
@@ -513,6 +513,16 @@ void matrixAdd(char *userInput)
     struct matrix *p = &former;
     struct matrix *q = &latter;
 
+    int cnt = 0, k = 0;
+    for (k = 0; k < 63; k++)
+    {
+        if (userInput[k] == ',')
+        {
+            cnt++;
+        }
+    }
+    k = 0;
+
     FILE *fp = NULL;
     fp = fopen("matrix", "r+");
     if (fp == NULL)
@@ -521,7 +531,7 @@ void matrixAdd(char *userInput)
     }
     else
     {
-        int j = 0, check = 0;
+        int len = 0, j = 0, check = 0;
         const char cut[2] = ",";
         const char cap[2] = "(";
         char *token;
@@ -531,7 +541,7 @@ void matrixAdd(char *userInput)
 
         former.name = strchr(token, '(') + sizeof(char);
 
-        while (token != NULL && j < 2 && fp != NULL)
+        while (token != NULL && j < 2 && fp != NULL && cnt == 2)
         {
             switch (j)
             {
@@ -541,7 +551,7 @@ void matrixAdd(char *userInput)
                 break;
             case 1:
                 token = strtok(NULL, cut);
-                if (token == 0)
+                if (strlen(token) == 0)
                 {
                     printf("\n[\033[31;1mError\033[0m]:\033[31;1m result.name_invalid\033[0m\n");
                 }
@@ -569,7 +579,8 @@ void matrixAdd(char *userInput)
                     while (!feof(fp) && check == 0)
                     {
                         fgets(buff, 64, (FILE *)fp);
-                        if (strstr(buff, bach) != NULL && check == 0) //Whether userInput is a useable matrixName.
+                        len = strlen(bach);
+                        if (strncmp(buff, bach, len) == 0 && check == 0) //Whether userInput is a useable matrixName.
                         {
                             printf("\n[\033[31;1mError\033[0m]:\033[31;1m result.name existed\033[0m \033[33;1m<~ %s\033[0m\n", result.name);
                             check = 1;
@@ -582,7 +593,7 @@ void matrixAdd(char *userInput)
             j++;
         }
 
-        if (token != 0 && check == 0)
+        if (token != 0 && check == 0 && cnt == 2)
         {
             int i = 0, j = 0;
 
@@ -687,6 +698,7 @@ void matrixAdd(char *userInput)
         }
         else
         {
+            printf("\n[\033[31;1mError\033[0m]:\033[31;1m Invalid_input\033[0m\n");
             printf("\n[\033[36;1mHelp\033[0m]:\033[37;1m >> matrixAdd(A,B,result)\033[0m\n");
         }
         fclose(fp);
@@ -701,6 +713,16 @@ void matrixMinus(char *userInput)
 
     struct matrix *p = &former;
     struct matrix *q = &latter;
+
+    int len = 0, cnt = 0, k = 0;
+    for (k = 0; k < 63; k++)
+    {
+        if (userInput[k] == ',')
+        {
+            cnt++;
+        }
+    }
+    k = 0;
 
     FILE *fp = NULL;
     fp = fopen("matrix", "r+");
@@ -720,7 +742,7 @@ void matrixMinus(char *userInput)
 
         former.name = strchr(token, '(') + sizeof(char);
 
-        while (token != NULL && j < 2)
+        while (token != NULL && j < 2 && cnt == 2)
         {
             switch (j)
             {
@@ -758,7 +780,8 @@ void matrixMinus(char *userInput)
                     while (!feof(fp) && check == 0)
                     {
                         fgets(buff, 64, (FILE *)fp);
-                        if (strstr(buff, bach) != NULL && check == 0) //Whether userInput is a useable matrixName.
+                        len = strlen(bach);
+                        if (strncmp(buff, bach, len) == 0 && check == 0) //Whether userInput is a useable matrixName.
                         {
                             printf("\n[\033[31;1mError\033[0m]:\033[31;1m result.name existed\033[0m \033[33;1m<~ %s\033[0m\n", result.name);
                             check = 1;
@@ -771,7 +794,7 @@ void matrixMinus(char *userInput)
             j++;
         }
 
-        if (token != 0 && check == 0)
+        if (token != 0 && check == 0 && cnt == 2)
         {
             int i = 0, j = 0;
 
@@ -876,6 +899,7 @@ void matrixMinus(char *userInput)
         }
         else
         {
+            printf("\n[\033[31;1mError\033[0m]:\033[31;1m Invalid_input\033[0m\n");
             printf("\n[\033[36;1mHelp\033[0m]:\033[37;1m >> matrixMinus(A,B,result)\033[0m\n");
         }
         fclose(fp);
@@ -890,6 +914,16 @@ void matrixMulti(char *userInput)
 
     struct matrix *p = &former;
     struct matrix *q = &latter;
+
+    int len = 0, cnt = 0, k = 0;
+    for (k = 0; k < 63; k++)
+    {
+        if (userInput[k] == ',')
+        {
+            cnt++;
+        }
+    }
+    k = 0;
 
     FILE *fp = NULL;
     fp = fopen("matrix", "r+");
@@ -909,7 +943,7 @@ void matrixMulti(char *userInput)
 
         former.name = strchr(token, '(') + sizeof(char);
 
-        while (token != NULL && j < 2)
+        while (token != NULL && j < 2 && cnt == 2)
         {
             switch (j)
             {
@@ -947,7 +981,8 @@ void matrixMulti(char *userInput)
                     while (!feof(fp) && check == 0)
                     {
                         fgets(buff, 64, (FILE *)fp);
-                        if (strstr(buff, bach) != NULL && check == 0) //Whether userInput is a useable matrixName.
+                        len = strlen(bach);
+                        if (strncmp(buff, bach, len) == 0 && check == 0) //Whether userInput is a useable matrixName.
                         {
                             printf("\n[\033[31;1mError\033[0m]:\033[31;1m result.name existed\033[0m \033[33;1m<~ %s\033[0m\n", result.name);
                             check = 1;
@@ -960,7 +995,7 @@ void matrixMulti(char *userInput)
             j++;
         }
 
-        if (token != 0 && check == 0)
+        if (token != 0 && check == 0 && cnt == 2)
         {
             int i = 0, j = 0;
 
@@ -1077,7 +1112,8 @@ void matrixMulti(char *userInput)
         }
         else
         {
-            printf("\n[\033[36;1mHelp\033[0m]:\033[37;1m >> matrixAdd(A,B,result)\033[0m\n");
+            printf("\n[\033[31;1mError\033[0m]:\033[31;1m Invalid_input\033[0m\n");
+            printf("\n[\033[36;1mHelp\033[0m]:\033[37;1m >> matrixMulti(A,B,result)\033[0m\n");
         }
         fclose(fp);
     }
@@ -1088,8 +1124,16 @@ void matrixTran(char *userInput)
     struct matrix former;
     struct matrix result;
     char *token;
-    int check = 0;
+    int len = 0, check = 0, k = 0, cnt = 0;
     struct matrix *p = &former;
+    for (k = 0; k < 63; k++)
+    {
+        if (userInput[k] == ',')
+        {
+            cnt++;
+        }
+    }
+    k = 0;
 
     FILE *fp = NULL;
     fp = fopen("matrix", "r+");
@@ -1109,7 +1153,7 @@ void matrixTran(char *userInput)
 
         former.name = strchr(token, '(') + sizeof(char);
 
-        while (token != NULL && j < 1)
+        while (token != NULL && j < 1 && cnt == 1)
         {
 
             token = strtok(NULL, cut);
@@ -1141,7 +1185,8 @@ void matrixTran(char *userInput)
                 while (!feof(fp) && check == 0)
                 {
                     fgets(buff, 64, (FILE *)fp);
-                    if (strstr(buff, bach) != NULL && check == 0 && bach[0] == buff[0]) //Whether userInput is a useable matrixName.
+                    len = strlen(bach);
+                    if (strncmp(buff, bach, len) == 0 && check == 0) //Whether userInput is a useable matrixName.
                     {
                         printf("\n[\033[31;1mError\033[0m]:\033[31;1m result.name existed\033[0m \033[33;1m<~ %s\033[0m\n", result.name);
                         check = 1;
@@ -1154,7 +1199,7 @@ void matrixTran(char *userInput)
         j++;
     }
 
-    if (token != 0 && check == 0)
+    if (token != 0 && check == 0 && cnt == 1)
     {
         int i = 0, j = 0;
 
@@ -1237,12 +1282,190 @@ void matrixTran(char *userInput)
         }
         else
         {
-            printf("\n[\033[31;1mError\033[0m]:\033[37;1m A<i,n> x B<n,j> = C<i,j>\033[0m\n");
+            printf("\n[\033[31;1mError\033[0m]:\033[31;1m Matrix Not_Found\033[0m \033[33;1m <~ %s\033[0m\n", former.name);
         }
     }
     else
     {
-        printf("\n[\033[36;1mHelp\033[0m]:\033[37;1m >> matrixAdd(A,B,result)\033[0m\n");
+        printf("\n[\033[31;1mError\033[0m]:\033[31;1m Invalid_input\033[0m\n");
+        printf("\n[\033[36;1mHelp\033[0m]:\033[37;1m >> matrixTran(A,result)\033[0m\n");
     }
     fclose(fp);
+}
+
+void matrixScal(char *userInput)
+{
+    struct matrix former;
+    struct matrix result;
+
+    struct matrix *p = &former;
+
+    int cnt = 0, k = 0;
+    float scale = 0;
+    for (k = 0; k < 63; k++)
+    {
+        if (userInput[k] == ',')
+        {
+            cnt++;
+        }
+    }
+    k = 0;
+
+    FILE *fp = NULL;
+    fp = fopen("matrix", "r+");
+    if (fp == NULL)
+    {
+        printf("\n[\033[31;1mError\033[0m]:\033[31;1m No matrix exists\033[0m\n");
+    }
+    else
+    {
+        int len = 0, j = 0, check = 0;
+        const char cut[2] = ",";
+        const char cap[2] = "(";
+        char *token;
+        char buff[64];
+
+        token = strtok(userInput, cut);
+
+        former.name = strchr(token, '(') + sizeof(char);
+
+        while (token != NULL && j < 2 && fp != NULL && cnt == 2)
+        {
+            switch (j)
+            {
+            case 0:
+                token = strtok(NULL, cut);
+                scale = atof(token);
+                break;
+            case 1:
+                token = strtok(NULL, cut);
+                if (token == 0)
+                {
+                    printf("\n[\033[31;1mError\033[0m]:\033[31;1m result.name_invalid\033[0m\n");
+                }
+                else
+                {
+                    int i = 0;
+                    result.name = token;
+                    result.name[strlen(token) - 1] = '\0';
+
+                    char bach[strlen(result.name) + 2];
+
+                    for (i = 0; i <= strlen(result.name) + 1; i++)
+                    {
+                        bach[i] = '0';
+                    }
+
+                    for (i = 0; i < strlen(result.name) + 1; i++)
+                    {
+                        bach[i] = result.name[i];
+                    }
+
+                    bach[strlen(result.name)] = '<';
+                    bach[strlen(result.name) + 1] = '\0';
+
+                    while (!feof(fp) && check == 0)
+                    {
+                        fgets(buff, 64, (FILE *)fp);
+                        len = strlen(bach);
+                        if (strncmp(buff, bach, len) == 0 && check == 0) //Whether userInput is a useable matrixName.
+                        {
+                            printf("\n[\033[31;1mError\033[0m]:\033[31;1m result.name existed\033[0m \033[33;1m<~ %s\033[0m\n", result.name);
+                            check = 1;
+                        }
+                    }
+                }
+
+                break;
+            }
+            j++;
+        }
+
+        if (token != 0 && check == 0 && cnt == 2)
+        {
+            int i = 0, j = 0;
+
+            int check_former = matrixEmploy(p);
+
+            if (check_former != 0)
+            {
+
+                float matrixfirst[former.row][former.column];
+                float *arone = &matrixfirst[0][0];
+
+                matrixExtract(p, arone);
+                printf("\n[\033[34;1mMatrix\033[0m]: \033[33;1m%s\033[0m < %d, %d > \n", former.name, former.row, former.column);
+                for (i = 0; i < former.row; i++)
+                {
+                    for (j = 0; j < former.column; j++)
+                    {
+                        if (j != 0)
+                            printf(" %g ", matrixfirst[i][j]);
+                        else
+                            printf("[ %g ", matrixfirst[i][j]);
+                    }
+                    printf("]\n");
+                }
+
+                result.row = former.row;
+                result.column = former.column;
+                float matrixAns[result.row][result.column];
+
+                printf("\n[\033[32;1mMatrix\033[0m]: \033[33;1m%s\033[0m <\033[37;1m %d\033[0m,\033[37;1m %d\033[0m > has been saved.\n", result.name, result.row, result.column);
+
+                for (i = 0; i < result.row; i++)
+                {
+                    for (j = 0; j < result.column; j++)
+                    {
+                        matrixAns[i][j] = scale * matrixfirst[i][j];
+                    }
+                }
+
+                for (i = 0; i < result.row; i++)
+                {
+                    for (j = 0; j < result.column; j++)
+                    {
+                        if (j != 0)
+                            printf(" %g ", matrixAns[i][j]);
+                        else
+                            printf("[ %g ", matrixAns[i][j]);
+                    }
+                    printf("]\n");
+                }
+
+                fprintf(fp, "\n%s<%d,%d>\n", result.name, result.row, result.column);
+
+                for (i = 0; i < result.row; i++)
+                {
+                    for (j = 0; j < result.column; j++)
+                    {
+                        if (j == result.column - 1)
+                            fprintf(fp, "%g\n", matrixAns[i][j]);
+                        else
+                            fprintf(fp, "%g ", matrixAns[i][j]);
+                    }
+                }
+                fprintf(fp, "#\n");
+
+                FILE *fstream = NULL;
+                fstream = fopen("matrixstream", "a+");
+                fprintf(fstream, "\n%s<%d,%d>\n", result.name, result.row, result.column);
+                for (i = 0; i < result.row; i++)
+                {
+                    for (j = 0; j < result.column; j++)
+                    {
+                        fprintf(fstream, "%g\n", matrixAns[i][j]);
+                    }
+                }
+                fprintf(fstream, "#\n");
+                fclose(fstream);
+            }
+        }
+        else
+        {
+            printf("\n[\033[31;1mError\033[0m]:\033[31;1m Invalid_input\033[0m\n");
+            printf("\n[\033[36;1mHelp\033[0m]:\033[37;1m >> matrixScal(A,scale,result)\033[0m\n");
+        }
+        fclose(fp);
+    }
 }

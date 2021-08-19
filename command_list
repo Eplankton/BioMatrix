@@ -9,4 +9,5 @@ matrixAdd()#6
 matrixMinus()#7
 matrixMulti()#8
 matrixTran()#9
+matrixScal()#10
 END
