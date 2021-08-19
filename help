@@ -11,4 +11,5 @@
 10.matrixMulti() ~~ To multiply two matrixes together">> matrixMulti(Name1,Name2,result.Name)" (No space)
 11.matrixTran() ~~ To transpose a matrix "matrixTran(Name,result.Name)" (No space)
 12.matrixScal() ~~ To scale a matrix "matrixScal(Name,scale,result.Name)" (No space)
+13.matrixDet()  ~~ To get the Det(Name).(No space)
 END

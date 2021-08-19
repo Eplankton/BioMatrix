@@ -19,6 +19,8 @@ void matrixMinus(char *);                     //To minus two matrixes.(7)
 void matrixMulti(char *);                     //To multiply two matrixes together.(8)
 void matrixTran(char *);                      //To transpose a matrix.(9)
 void matrixScal(char *);                      //To scalar multiplay a matrix.(10)
+void matrixDet(char *);                       //To get the Det(matrix) under 3x3.(11)
+float Det(char *);                            //To get the Det(matrix) under 3x3.
 
 int search(char *userInput)
 {
@@ -1468,4 +1470,114 @@ void matrixScal(char *userInput)
         }
         fclose(fp);
     }
+}
+
+void matrixDet(char *userInput)
+{
+    struct matrix former;
+    char *token;
+    int len = 0, check = 0;
+    struct matrix *p = &former;
+
+    FILE *fp = NULL;
+    fp = fopen("matrix", "r+");
+    if (fp == NULL)
+    {
+        printf("\n[\033[31;1mError\033[0m]:\033[31;1m No matrix exists\033[0m\n");
+    }
+    else
+    {
+        char buff[64];
+        former.name = strchr(userInput, '(') + 1;
+        former.name[strlen(former.name) - 1] = '\0';
+
+        if (former.name[0] == '\0')
+        {
+            printf("\n[\033[31;1mError\033[0m]:\033[31;1m Invalid_input\033[0m\n");
+        }
+        else
+        {
+            int i = 0;
+            char bach[strlen(former.name) + 2];
+
+            for (i = 0; i <= strlen(former.name) + 1; i++)
+            {
+                bach[i] = '\0';
+            }
+
+            for (i = 0; i < strlen(former.name) + 1; i++)
+            {
+                bach[i] = former.name[i];
+            }
+
+            bach[strlen(former.name)] = '<';
+            bach[strlen(former.name) + 1] = '\0';
+
+            while (!feof(fp) && check == 0)
+            {
+                fgets(buff, 64, (FILE *)fp);
+                len = strlen(bach);
+                if (strncmp(buff, bach, len) == 0 && check == 0) //Whether userInput is a existed matrixName.
+                {
+                    check = 1;
+                }
+            }
+        }
+    }
+
+    if (check == 1)
+    {
+        int i = 0, j = 0;
+
+        int check_former = matrixEmploy(p);
+
+        if (check_former != 0 && (former.row == former.column))
+        {
+            float matrixfirst[former.row][former.column];
+            float *arone = &matrixfirst[0][0];
+
+            matrixExtract(p, arone);
+
+            printf("\n[\033[34;1mMatrix\033[0m]: \033[33;1m%s\033[0m < %d, %d > \n", former.name, former.row, former.column);
+            for (i = 0; i < former.row; i++)
+            {
+                for (j = 0; j < former.column; j++)
+                {
+                    if (j != 0)
+                        printf(" %g ", matrixfirst[i][j]);
+                    else
+                        printf("[ %g ", matrixfirst[i][j]);
+                }
+                printf("]\n");
+            }
+
+            float result = 0;
+
+            switch (former.row)
+            {
+            case 2:
+                result = matrixfirst[0][0] * matrixfirst[1][1] - matrixfirst[1][0] * matrixfirst[0][1];
+                printf("\n\033[32;1mDet\033[0m(\033[33;1m%s\033[0m) = %g\n", former.name, result);
+                break;
+            case 3:
+                result = matrixfirst[0][0] * matrixfirst[1][1] * matrixfirst[2][2] + matrixfirst[0][2] * matrixfirst[1][0] * matrixfirst[2][1] + matrixfirst[0][1] * matrixfirst[1][2] * matrixfirst[2][0] -
+                         matrixfirst[0][0] * matrixfirst[1][2] * matrixfirst[2][1] - matrixfirst[0][2] * matrixfirst[1][1] * matrixfirst[2][0] - matrixfirst[0][1] * matrixfirst[1][0] * matrixfirst[2][2];
+                printf("\n\033[32;1mDet\033[0m(\033[33;1m%s\033[0m) = %g\n", former.name, result);
+                break;
+            default:
+                printf("\n[\033[31;1mError\033[0m]:\033[31;1m Invalid_input\033[0m\n");
+                break;
+            }
+        }
+        else
+        {
+            printf("\n[\033[31;1mError\033[0m]:\033[31;1m row != column\033[0m\n");
+        }
+    }
+    else
+    {
+        printf("\n[\033[31;1mError\033[0m]:\033[31;1m Matrix Not_Found\033[0m \033[33;1m <~ %s\033[0m\n", former.name);
+    }
+
+    fclose(fp);
 }

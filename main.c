@@ -71,7 +71,10 @@ int main()
             matrixScal(userInput);
             key = 0;
             break;
-
+        case 11:
+            matrixDet(userInput);
+            key = 0;
+            break;
             //Add cases here.
 
         case 0: //Confirm the order {search()}
