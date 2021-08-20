@@ -14,4 +14,8 @@ matrixAdd(A,B,C)
 
 matrixMulti(C,B^T,D)
 
+matrixInverse(D,D^-1)
+
+martrixMulti(D,D^-1,IdentityMatrix)
+
 exit()

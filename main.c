@@ -75,6 +75,9 @@ int main()
             matrixDet(userInput);
             key = 0;
             break;
+        case 12:
+            matrixInverse(userInput);
+            key = 0;
             //Add cases here.
 
         case 0: //Confirm the order {search()}

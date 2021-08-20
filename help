@@ -12,4 +12,5 @@
 11.matrixTran() ~~ To transpose a matrix "matrixTran(Name,result.Name)" (No space)
 12.matrixScal() ~~ To scale a matrix "matrixScal(Name,scale,result.Name)" (No space)
 13.matrixDet()  ~~ To get the Det(Name).(No space)
+14.matrixInverse() ~~ To get the (Name)^-1 "matrixInverse(Name,result.Name)" (No space)
 END

@@ -20,7 +20,8 @@ void matrixMulti(char *);                     //To multiply two matrixes togethe
 void matrixTran(char *);                      //To transpose a matrix.(9)
 void matrixScal(char *);                      //To scalar multiplay a matrix.(10)
 void matrixDet(char *);                       //To get the Det(matrix) under 3x3.(11)
-float Det(char *);                            //To get the Det(matrix) under 3x3.
+float Det(struct matrix *, float *);          //To get the Det(matrix) under 3x3.
+void matrixInverse(char *);
 
 int search(char *userInput)
 {
@@ -1580,4 +1581,271 @@ void matrixDet(char *userInput)
     }
 
     fclose(fp);
+}
+
+void matrixInverse(char *userInput)
+{
+    struct matrix former;
+    struct matrix result;
+    char *token;
+    int len = 0, check = 0, k = 0, cnt = 0;
+    struct matrix *p = &former;
+    for (k = 0; k < 63; k++)
+    {
+        if (userInput[k] == ',')
+        {
+            cnt++;
+        }
+    }
+    k = 0;
+
+    FILE *fp = NULL;
+    fp = fopen("matrix", "r+");
+    if (fp == NULL)
+    {
+        printf("\n[\033[31;1mError\033[0m]:\033[31;1m No matrix exists\033[0m\n");
+    }
+    else
+    {
+        int j = 0;
+        const char cut[2] = ",";
+        const char cap[2] = "(";
+
+        char buff[64];
+
+        token = strtok(userInput, cut);
+
+        former.name = strchr(token, '(') + sizeof(char);
+
+        while (token != NULL && j < 1 && cnt == 1)
+        {
+
+            token = strtok(NULL, cut);
+            if (token == 0)
+            {
+                printf("\n[\033[31;1mError\033[0m]:\033[31;1m result.name_invalid\033[0m\n");
+            }
+            else
+            {
+                int i = 0;
+                result.name = token;
+                result.name[strlen(token) - 1] = '\0';
+
+                char bach[strlen(result.name) + 2];
+
+                for (i = 0; i <= strlen(result.name) + 1; i++)
+                {
+                    bach[i] = '0';
+                }
+
+                for (i = 0; i < strlen(result.name) + 1; i++)
+                {
+                    bach[i] = result.name[i];
+                }
+
+                bach[strlen(result.name)] = '<';
+                bach[strlen(result.name) + 1] = '\0';
+
+                while (!feof(fp) && check == 0)
+                {
+                    fgets(buff, 64, (FILE *)fp);
+                    len = strlen(bach);
+                    if (strncmp(buff, bach, len) == 0 && check == 0) //Whether userInput is a useable matrixName.
+                    {
+                        printf("\n[\033[31;1mError\033[0m]:\033[31;1m result.name existed\033[0m \033[33;1m<~ %s\033[0m\n", result.name);
+                        check = 1;
+                    }
+                }
+            }
+
+            break;
+        }
+        j++;
+    }
+
+    if (token != 0 && check == 0 && cnt == 1)
+    {
+        int i = 0, j = 0;
+
+        int check_former = matrixEmploy(p);
+
+        if (check_former != 0)
+        {
+            if (former.row == former.column)
+            {
+                float matrixfirst[former.row][former.column];
+                float matrixAns[former.row][former.column];
+                float *arone = &matrixfirst[0][0];
+
+                matrixExtract(p, arone);
+
+                printf("\n[\033[34;1mMatrix\033[0m]: \033[33;1m%s\033[0m < %d, %d > \n", former.name, former.row, former.column);
+                for (i = 0; i < former.row; i++)
+                {
+                    for (j = 0; j < former.column; j++)
+                    {
+                        if (j != 0)
+                            printf(" %g ", matrixfirst[i][j]);
+                        else
+                            printf("[ %g ", matrixfirst[i][j]);
+                    }
+                    printf("]\n");
+                }
+
+                if (Det(p, arone) != 0)
+                {
+                    switch (former.row)
+                    {
+                    case 2:
+                    {
+                        float cof = 1 / (Det(p, arone));
+                        matrixAns[0][0] = cof * matrixfirst[1][1];
+                        matrixAns[0][1] = (-1) * cof * matrixfirst[0][1];
+                        matrixAns[1][0] = (-1) * cof * matrixfirst[1][0];
+                        matrixAns[1][1] = cof * matrixfirst[0][0];
+                        break;
+                    }
+
+                    case 3:
+                    {
+                        int m = 0, n = 0, sh = 1;
+                        float cof = 1 / (Det(p, arone));
+                        float sub[2][2];
+                        float *temp = &sub[0][0];
+
+                        for (m = 0; m < 3; m++)
+                        {
+                            for (n = 0; n < 3; n++)
+                            {
+                                for (i = 0; i < 3; i++)
+                                {
+                                    for (j = 0; j < 3; j++)
+                                    {
+                                        if (i != m && j != n)
+                                        {
+                                            *temp++ = matrixfirst[i][j];
+                                        }
+                                    }
+                                }
+                                if ((m + n) % (2) != 0)
+                                {
+                                    sh = -1;
+                                }
+                                matrixAns[n][m] = cof * sh * (sub[0][0] * sub[1][1] - sub[1][0] * sub[0][1]);
+                                temp = &sub[0][0];
+                                i = 0, j = 0, sh = 1;
+                            }
+                        }
+                        break;
+                    }
+
+                    default:
+                        break;
+                    }
+
+                    printf("\n[\033[32;1mMatrix\033[0m]: \033[33;1m%s\033[0m <\033[37;1m %d\033[0m,\033[37;1m %d\033[0m > has been saved.\n", result.name, former.row, former.column);
+                    for (i = 0; i < former.row; i++)
+                    {
+                        for (j = 0; j < former.column; j++)
+                        {
+                            if (j != 0)
+                                printf(" %g ", matrixAns[i][j]);
+                            else
+                                printf("[ %g ", matrixAns[i][j]);
+                        }
+                        printf("]\n");
+                    }
+
+                    fprintf(fp, "\n%s<%d,%d>\n", result.name, former.row, former.column);
+
+                    for (i = 0; i < former.row; i++)
+                    {
+                        for (j = 0; j < former.column; j++)
+                        {
+                            if (j == former.column - 1)
+                                fprintf(fp, "%g\n", matrixAns[i][j]);
+                            else
+                                fprintf(fp, "%g ", matrixAns[i][j]);
+                        }
+                    }
+                    fprintf(fp, "#\n");
+
+                    FILE *fstream = NULL;
+                    fstream = fopen("matrixstream", "a+");
+                    fprintf(fstream, "\n%s<%d,%d>\n", result.name, former.row, former.column);
+                    for (i = 0; i < former.row; i++)
+                    {
+                        for (j = 0; j < former.column; j++)
+                        {
+                            fprintf(fstream, "%g\n", matrixAns[i][j]);
+                        }
+                    }
+                    fprintf(fstream, "#\n");
+                    fclose(fstream);
+                }
+                else
+                {
+                    printf("\n[\033[31;1mError\033[0m]:\033[31;1m Matrix Linearly_Dependent\033[0m \033[33;1m <~ %s\033[0m\n", former.name);
+                }
+            }
+            else
+            {
+                printf("\n[\033[31;1mError\033[0m]:\033[31;1m row != column\033[0m\n");
+            }
+        }
+        else
+        {
+            printf("\n[\033[31;1mError\033[0m]:\033[31;1m Matrix Not_Found\033[0m \033[33;1m <~ %s\033[0m\n", former.name);
+        }
+    }
+    else
+    {
+        printf("\n[\033[31;1mError\033[0m]:\033[31;1m Invalid_input\033[0m\n");
+        printf("\n[\033[36;1mHelp\033[0m]:\033[37;1m >> matrixInverse(A,A^-1)\033[0m\n");
+    }
+    fclose(fp);
+}
+
+float Det(struct matrix *f, float *array)
+{
+    float result = 0;
+    int i = 0, j = 0;
+    switch (f->row)
+    {
+    case 2:
+    {
+        float a[f->row][f->column];
+        for (i = 0; i < f->row; i++)
+        {
+            for (j = 0; j < f->column; j++)
+            {
+                a[i][j] = *array;
+                array++;
+            }
+        }
+        result = a[0][0] * a[1][1] - a[1][0] * a[0][1];
+        break;
+    }
+    case 3:
+    {
+        float a[f->row][f->column];
+        for (i = 0; i < f->row; i++)
+        {
+            for (j = 0; j < f->column; j++)
+            {
+                a[i][j] = *array;
+                array++;
+            }
+        }
+        result = a[0][0] * a[1][1] * a[2][2] + a[0][2] * a[1][0] * a[2][1] + a[0][1] * a[1][2] * a[2][0] -
+                 a[0][0] * a[1][2] * a[2][1] - a[0][2] * a[1][1] * a[2][0] - a[0][1] * a[1][0] * a[2][2];
+
+        break;
+    }
+
+    default:
+        break;
+    }
+
+    return result;
 }

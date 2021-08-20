@@ -11,4 +11,5 @@ matrixMulti()#8
 matrixTran()#9
 matrixScal()#10
 matrixDet()#11
+matrixInverse()#12
 END
