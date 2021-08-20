@@ -1,12 +1,12 @@
 matrixInput(A,3,4)
-1 2 3 4
-5 6 7 8
-9 10 11 12
+11 2 34 4
+56 63 7 87
+95 10 114 12
 
 matrixInput(B,3,4)
-12 11 10 9
-8 7 6 5
-4 3 2 1
+123 121 710 9
+86 75 65 59
+42 3 28 101
 
 matrixTran(B,B^T)
 
@@ -14,8 +14,8 @@ matrixAdd(A,B,C)
 
 matrixMulti(C,B^T,D)
 
-matrixInverse(D,D^-1)
+matrixInverse(D,Di)
 
-martrixMulti(D,D^-1,IdentityMatrix)
+matrixMulti(D,Di,IdentityMatrix)
 
 exit()
