@@ -3,7 +3,9 @@
 #include <string.h>
 #include <time.h>
 #include <stdlib.h>
+#include "expansion.h"
 #include "function.h"
+
 
 int main()
 {

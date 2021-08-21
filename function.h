@@ -19,8 +19,8 @@ void matrixMinus(char *);                     //To minus two matrixes.(7)
 void matrixMulti(char *);                     //To multiply two matrixes together at accuracy.(8)
 void matrixTran(char *);                      //To transpose a matrix.(9)
 void matrixScal(char *);                      //To scalar multiplay a matrix.(10)
-void matrixDet(char *);                       //To get the Det(matrix) under 3x3.(11)
-float Det(struct matrix *, float *);          //To get the Det(matrix) under 3x3.
+void matrixDet(char *);                       //To get the Det(matrix) under 20.(11)
+float Det(struct matrix *, float *);          //To get the Det(matrix) under 20.
 void matrixInverse(char *);                   //To inverse a matrix.(12)
 
 int search(char *userInput)
@@ -1056,7 +1056,7 @@ void matrixMulti(char *userInput)
                     printf("\n[\033[32;1mMatrix\033[0m]: \033[33;1m%s\033[0m <\033[37;1m %d\033[0m,\033[37;1m %d\033[0m > has been saved.\n", result.name, result.row, result.column);
 
                     int c = 0;
-                    float acc = 0.0001; //Set accuracy
+                    float acc = 1e-003; //Set the accuracy
 
                     for (i = 0; i < former.row; i++)
                     {
@@ -1571,7 +1571,8 @@ void matrixDet(char *userInput)
                 printf("\n\033[32;1mDet\033[0m(\033[33;1m%s\033[0m) = %g\n", former.name, result);
                 break;
             default:
-                printf("\n[\033[31;1mError\033[0m]:\033[31;1m Invalid_input\033[0m\n");
+                result = Det(p, arone);
+                printf("\n\033[32;1mDet\033[0m(\033[33;1m%s\033[0m) = %g\n", former.name, result);
                 break;
             }
         }
@@ -1592,9 +1593,10 @@ void matrixInverse(char *userInput)
 {
     struct matrix former;
     struct matrix result;
+    struct matrix *p = &former;
     char *token;
     int len = 0, check = 0, k = 0, cnt = 0;
-    struct matrix *p = &former;
+
     for (k = 0; k < 63; k++)
     {
         if (userInput[k] == ',')
@@ -1671,7 +1673,6 @@ void matrixInverse(char *userInput)
     if (token != 0 && check == 0 && cnt == 1)
     {
         int i = 0, j = 0;
-
         int check_former = matrixEmploy(p);
 
         if (check_former != 0)
@@ -1715,16 +1716,16 @@ void matrixInverse(char *userInput)
                     {
                         int m = 0, n = 0, sh = 1;
                         float cof = 1 / (Det(p, arone));
-                        float sub[2][2];
+                        float sub[former.row - 1][former.column - 1];
                         float *temp = &sub[0][0];
 
-                        for (m = 0; m < 3; m++)
+                        for (m = 0; m < former.row; m++)
                         {
-                            for (n = 0; n < 3; n++)
+                            for (n = 0; n < former.row; n++)
                             {
-                                for (i = 0; i < 3; i++)
+                                for (i = 0; i < former.row; i++)
                                 {
-                                    for (j = 0; j < 3; j++)
+                                    for (j = 0; j < former.row; j++)
                                     {
                                         if (i != m && j != n)
                                         {
@@ -1732,6 +1733,7 @@ void matrixInverse(char *userInput)
                                         }
                                     }
                                 }
+
                                 if ((m + n) % (2) != 0)
                                 {
                                     sh = -1;
@@ -1740,19 +1742,61 @@ void matrixInverse(char *userInput)
                                 {
                                     sh = 1;
                                 }
-                                matrixAns[n][m] = cof * sh * (sub[0][0] * sub[1][1] - sub[1][0] * sub[0][1]);
+
+                                struct matrix submatrix;
+                                submatrix.row = former.row - 1, submatrix.column = former.column - 1;
+                                struct matrix *q = &submatrix;
                                 temp = &sub[0][0];
-                                i = 0, j = 0;
+                                matrixAns[n][m] = cof * sh * Det(q, temp);
                             }
                         }
                         break;
                     }
 
                     default:
+                    {
+                        int m = 0, n = 0, sh = 1;
+                        float cof = 1 / (Det(p, arone));
+                        float sub[former.row - 1][former.column - 1];
+                        float *temp = &sub[0][0];
+
+                        for (m = 0; m < former.row; m++)
+                        {
+                            for (n = 0; n < former.row; n++)
+                            {
+                                for (i = 0; i < former.row; i++)
+                                {
+                                    for (j = 0; j < former.row; j++)
+                                    {
+                                        if (i != m && j != n)
+                                        {
+                                            *temp++ = matrixfirst[i][j];
+                                        }
+                                    }
+                                }
+
+                                if ((m + n) % (2) != 0)
+                                {
+                                    sh = -1;
+                                }
+                                else
+                                {
+                                    sh = 1;
+                                }
+
+                                struct matrix submatrix;
+                                submatrix.row = former.row - 1, submatrix.column = former.column - 1;
+                                struct matrix *q = &submatrix;
+                                temp = &sub[0][0];
+                                matrixAns[n][m] = cof * sh * Det(q, temp);
+                            }
+                        }
                         break;
                     }
+                    break;
+                    }
 
-                    printf("\n[\033[32;1mMatrix\033[0m]: \033[33;1m%s\033[0m <\033[37;1m %d\033[0m,\033[37;1m %d\033[0m > has been saved.\n", result.name, former.row, former.column);
+                    printf("\n\n[\033[32;1mMatrix\033[0m]: \033[33;1m%s\033[0m <\033[37;1m %d\033[0m,\033[37;1m %d\033[0m > has been saved.\n", result.name, former.row, former.column);
                     for (i = 0; i < former.row; i++)
                     {
                         for (j = 0; j < former.column; j++)
@@ -1815,46 +1859,47 @@ void matrixInverse(char *userInput)
     fclose(fp);
 }
 
-float Det(struct matrix *f, float *array)
+float Det(struct matrix *f, float *array) //Use expansion.h
 {
-    float result = 0;
+    float answer = 0;
     int i = 0, j = 0;
+    float a[f->row][f->column];
+
+    float matrix[20][20];
+
+    for (i = 0; i < f->row; i++)
+    {
+        for (j = 0; j < f->column; j++)
+        {
+            matrix[i][j] = *array;
+            a[i][j] = *array;
+            array++;
+        }
+    }
+
+    i = 0, j = 0;
+
     switch (f->row)
     {
     case 2:
     {
-        float a[f->row][f->column];
-        for (i = 0; i < f->row; i++)
-        {
-            for (j = 0; j < f->column; j++)
-            {
-                a[i][j] = *array;
-                array++;
-            }
-        }
-        result = a[0][0] * a[1][1] - a[1][0] * a[0][1];
+        answer = a[0][0] * a[1][1] - a[1][0] * a[0][1];
         break;
     }
     case 3:
     {
-        float a[f->row][f->column];
-        for (i = 0; i < f->row; i++)
-        {
-            for (j = 0; j < f->column; j++)
-            {
-                a[i][j] = *array;
-                array++;
-            }
-        }
-        result = a[0][0] * a[1][1] * a[2][2] + a[0][2] * a[1][0] * a[2][1] + a[0][1] * a[1][2] * a[2][0] -
+        answer = a[0][0] * a[1][1] * a[2][2] + a[0][2] * a[1][0] * a[2][1] + a[0][1] * a[1][2] * a[2][0] -
                  a[0][0] * a[1][2] * a[2][1] - a[0][2] * a[1][1] * a[2][0] - a[0][1] * a[1][0] * a[2][2];
 
         break;
     }
 
-    default:
-        break;
+    default: //20 >dimension > 3
+    {
+        answer = determinant(matrix, f->row); //This function is taken from https://zhuanlan.zhihu.com/p/305328519
+    }
+    break;
     }
 
-    return result;
+    return answer;
 }
