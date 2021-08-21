@@ -16,12 +16,12 @@ void matrixExtract(struct matrix *, float *); //To import a matrix from 'matrixs
 int matrixEmploy(struct matrix *);            //To confirm a matrix and return its name/row/column.
 void matrixAdd(char *);                       //To add two matrixes together.(6)
 void matrixMinus(char *);                     //To minus two matrixes.(7)
-void matrixMulti(char *);                     //To multiply two matrixes together.(8)
+void matrixMulti(char *);                     //To multiply two matrixes together at accuracy.(8)
 void matrixTran(char *);                      //To transpose a matrix.(9)
 void matrixScal(char *);                      //To scalar multiplay a matrix.(10)
 void matrixDet(char *);                       //To get the Det(matrix) under 3x3.(11)
 float Det(struct matrix *, float *);          //To get the Det(matrix) under 3x3.
-void matrixInverse(char *);
+void matrixInverse(char *);                   //To inverse a matrix.(12)
 
 int search(char *userInput)
 {
@@ -1056,6 +1056,7 @@ void matrixMulti(char *userInput)
                     printf("\n[\033[32;1mMatrix\033[0m]: \033[33;1m%s\033[0m <\033[37;1m %d\033[0m,\033[37;1m %d\033[0m > has been saved.\n", result.name, result.row, result.column);
 
                     int c = 0;
+                    float acc = 0.0001; //Set accuracy
 
                     for (i = 0; i < former.row; i++)
                     {
@@ -1065,6 +1066,10 @@ void matrixMulti(char *userInput)
                             {
                                 matrixAns[i][j] += (matrixfirst[i][c] * matrixsecond[c][j]);
                             }
+                            if (matrixAns[i][j] <= acc)
+                            {
+                                matrixAns[i][j] = 0;
+                            }
                         }
                     }
 
@@ -1073,9 +1078,9 @@ void matrixMulti(char *userInput)
                         for (j = 0; j < result.column; j++)
                         {
                             if (j != 0)
-                                printf(" %g ", matrixAns[i][j]);
+                                printf(" %.3g ", matrixAns[i][j]);
                             else
-                                printf("[ %g ", matrixAns[i][j]);
+                                printf("[ %.3g ", matrixAns[i][j]);
                         }
                         printf("]\n");
                     }
@@ -1087,9 +1092,9 @@ void matrixMulti(char *userInput)
                         for (j = 0; j < result.column; j++)
                         {
                             if (j == result.column - 1)
-                                fprintf(fp, "%g\n", matrixAns[i][j]);
+                                fprintf(fp, "%.3g\n", matrixAns[i][j]);
                             else
-                                fprintf(fp, "%g ", matrixAns[i][j]);
+                                fprintf(fp, "%.3g ", matrixAns[i][j]);
                         }
                     }
                     fprintf(fp, "#\n");
@@ -1101,7 +1106,7 @@ void matrixMulti(char *userInput)
                     {
                         for (j = 0; j < result.column; j++)
                         {
-                            fprintf(fstream, "%g\n", matrixAns[i][j]);
+                            fprintf(fstream, "%.3g\n", matrixAns[i][j]);
                         }
                     }
                     fprintf(fstream, "#\n");
@@ -1731,9 +1736,13 @@ void matrixInverse(char *userInput)
                                 {
                                     sh = -1;
                                 }
+                                else
+                                {
+                                    sh = 1;
+                                }
                                 matrixAns[n][m] = cof * sh * (sub[0][0] * sub[1][1] - sub[1][0] * sub[0][1]);
                                 temp = &sub[0][0];
-                                i = 0, j = 0, sh = 1;
+                                i = 0, j = 0;
                             }
                         }
                         break;
