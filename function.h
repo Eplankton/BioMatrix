@@ -18,10 +18,10 @@ void matrixAdd(char *);                       //To add two matrixes together.(6)
 void matrixMinus(char *);                     //To minus two matrixes.(7)
 void matrixMulti(char *);                     //To multiply two matrixes together at accuracy.(8)
 void matrixTran(char *);                      //To transpose a matrix.(9)
-void matrixScal(char *);                      //To scalar multiplay a matrix.(10)
+void matrixScale(char *);                      //To scalar multiplay a matrix.(10)
 void matrixDet(char *);                       //To get the Det(matrix) under 20.(11)
 float Det(struct matrix *, float *);          //To get the Det(matrix) under 20.
-void matrixInverse(char *);                   //To inverse a matrix.(12)
+void matrixInv(char *);                   //To inverse a matrix.(12)
 
 int search(char *userInput)
 {
@@ -241,7 +241,7 @@ void matrixInput(char *userInput)
                 {
                     for (j = 0; j < column; j++)
                     {
-                        printf("\nThe row(%d)column(%d) = ", i + 1, j + 1);
+                        printf("\nThe row(\033[32;1m%d\033[0m)column(\033[32;1m%d\033[0m) = ", i + 1, j + 1);
 
                         scanf("%g", &save[i][j]);
 
@@ -659,11 +659,11 @@ void matrixAdd(char *userInput)
                         for (j = 0; j < result.column; j++)
                         {
                             if (j != 0)
-                                printf(" %g ", matrixAns[i][j]);
+                                printf("\033[37;1m %g \033[0m", matrixAns[i][j]);
                             else
-                                printf("[ %g ", matrixAns[i][j]);
+                                printf("\033[37;1m[ %g \033[0m", matrixAns[i][j]);
                         }
-                        printf("]\n");
+                        printf("\033[37;1m]\033[0m\n");
                     }
 
                     fprintf(fp, "\n%s<%d,%d>\n", result.name, result.row, result.column);
@@ -860,11 +860,11 @@ void matrixMinus(char *userInput)
                         for (j = 0; j < result.column; j++)
                         {
                             if (j != 0)
-                                printf(" %g ", matrixAns[i][j]);
+                                printf("\033[37;1m %g \033[0m", matrixAns[i][j]);
                             else
-                                printf("[ %g ", matrixAns[i][j]);
+                                printf("\033[37;1m[ %g \033[0m", matrixAns[i][j]);
                         }
-                        printf("]\n");
+                        printf("\033[37;1m]\033[0m\n");
                     }
 
                     fprintf(fp, "\n%s<%d,%d>\n", result.name, result.row, result.column);
@@ -1056,7 +1056,7 @@ void matrixMulti(char *userInput)
                     printf("\n[\033[32;1mMatrix\033[0m]: \033[33;1m%s\033[0m <\033[37;1m %d\033[0m,\033[37;1m %d\033[0m > has been saved.\n", result.name, result.row, result.column);
 
                     int c = 0;
-                    float acc = 1e-003; //Set the accuracy
+                    float acc = 9e-004; //Set the accuracy if you need
 
                     for (i = 0; i < former.row; i++)
                     {
@@ -1066,10 +1066,6 @@ void matrixMulti(char *userInput)
                             {
                                 matrixAns[i][j] += (matrixfirst[i][c] * matrixsecond[c][j]);
                             }
-                            if (matrixAns[i][j] <= acc)
-                            {
-                                matrixAns[i][j] = 0;
-                            }
                         }
                     }
 
@@ -1078,11 +1074,11 @@ void matrixMulti(char *userInput)
                         for (j = 0; j < result.column; j++)
                         {
                             if (j != 0)
-                                printf(" %.3g ", matrixAns[i][j]);
+                                printf("\033[37;1m %.3g \033[0m", matrixAns[i][j]);
                             else
-                                printf("[ %.3g ", matrixAns[i][j]);
+                                printf("\033[37;1m[ %g \033[0m", matrixAns[i][j]);
                         }
-                        printf("]\n");
+                        printf("\033[37;1m]\033[0m\n");
                     }
 
                     fprintf(fp, "\n%s<%d,%d>\n", result.name, result.row, result.column);
@@ -1254,11 +1250,11 @@ void matrixTran(char *userInput)
                 for (j = 0; j < result.column; j++)
                 {
                     if (j != 0)
-                        printf(" %g ", matrixAns[i][j]);
+                        printf("\033[37;1m %g \033[0m", matrixAns[i][j]);
                     else
-                        printf("[ %g ", matrixAns[i][j]);
+                        printf("\033[37;1m[ %g \033[0m", matrixAns[i][j]);
                 }
-                printf("]\n");
+                printf("\033[37;1m]\033[0m\n");
             }
 
             fprintf(fp, "\n%s<%d,%d>\n", result.name, result.row, result.column);
@@ -1301,7 +1297,7 @@ void matrixTran(char *userInput)
     fclose(fp);
 }
 
-void matrixScal(char *userInput)
+void matrixScale(char *userInput)
 {
     struct matrix former;
     struct matrix result;
@@ -1434,11 +1430,11 @@ void matrixScal(char *userInput)
                     for (j = 0; j < result.column; j++)
                     {
                         if (j != 0)
-                            printf(" %g ", matrixAns[i][j]);
+                            printf("\033[37;1m %g \033[0m", matrixAns[i][j]);
                         else
-                            printf("[ %g ", matrixAns[i][j]);
+                            printf("\033[37;1m[ %g \033[0m", matrixAns[i][j]);
                     }
-                    printf("]\n");
+                    printf("\033[37;1m]\033[0m\n");
                 }
 
                 fprintf(fp, "\n%s<%d,%d>\n", result.name, result.row, result.column);
@@ -1563,16 +1559,16 @@ void matrixDet(char *userInput)
             {
             case 2:
                 result = matrixfirst[0][0] * matrixfirst[1][1] - matrixfirst[1][0] * matrixfirst[0][1];
-                printf("\n\033[32;1mDet\033[0m(\033[33;1m%s\033[0m) = %g\n", former.name, result);
+                printf("\n\033[32;1mDet\033[0m(\033[33;1m%s\033[0m) = \033[37;1m%g\033[0m\n", former.name, result);
                 break;
             case 3:
                 result = matrixfirst[0][0] * matrixfirst[1][1] * matrixfirst[2][2] + matrixfirst[0][2] * matrixfirst[1][0] * matrixfirst[2][1] + matrixfirst[0][1] * matrixfirst[1][2] * matrixfirst[2][0] -
                          matrixfirst[0][0] * matrixfirst[1][2] * matrixfirst[2][1] - matrixfirst[0][2] * matrixfirst[1][1] * matrixfirst[2][0] - matrixfirst[0][1] * matrixfirst[1][0] * matrixfirst[2][2];
-                printf("\n\033[32;1mDet\033[0m(\033[33;1m%s\033[0m) = %g\n", former.name, result);
+                printf("\n\033[32;1mDet\033[0m(\033[33;1m%s\033[0m) = \033[37;1m%g\033[0m\n", former.name, result);
                 break;
             default:
                 result = Det(p, arone);
-                printf("\n\033[32;1mDet\033[0m(\033[33;1m%s\033[0m) = %g\n", former.name, result);
+                printf("\n\033[32;1mDet\033[0m(\033[33;1m%s\033[0m) = \033[37;1m%g\033[0m\n", former.name, result);
                 break;
             }
         }
@@ -1589,7 +1585,7 @@ void matrixDet(char *userInput)
     fclose(fp);
 }
 
-void matrixInverse(char *userInput)
+void matrixInv(char *userInput)
 {
     struct matrix former;
     struct matrix result;
@@ -1903,3 +1899,4 @@ float Det(struct matrix *f, float *array) //Use expansion.h
 
     return answer;
 }
+

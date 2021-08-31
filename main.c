@@ -3,7 +3,7 @@
 #include <string.h>
 #include <time.h>
 #include <stdlib.h>
-#include "expansion.h"
+#include "expand.h"
 #include "function.h"
 
 
@@ -26,6 +26,7 @@ int main()
             userInput[i] = '\0';
         }
         i = 0;
+        key = 0;
 
         printf("\n\033[33;1m>> \033[0m");
         scanf("%s", userInput);
@@ -35,51 +36,39 @@ int main()
         {
         case 1:
             test();
-            key = 0;
             break;
         case 2:
             help();
-            key = 0;
             break;
         case 3:
             clear();
-            key = 0;
             break;
         case 4:
             matrixInput(userInput);
-            key = 0;
             break;
         case 5:
             matrixDetect(userInput);
-            key = 0;
             break;
         case 6:
             matrixAdd(userInput);
-            key = 0;
             break;
         case 7:
             matrixMinus(userInput);
-            key = 0;
             break;
         case 8:
             matrixMulti(userInput);
-            key = 0;
             break;
         case 9:
             matrixTran(userInput);
-            key = 0;
             break;
         case 10:
-            matrixScal(userInput);
-            key = 0;
+            matrixScale(userInput);
             break;
         case 11:
             matrixDet(userInput);
-            key = 0;
             break;
         case 12:
-            matrixInverse(userInput);
-            key = 0;
+            matrixInv(userInput);
             //Add cases here.
 
         case 0: //Confirm the order {search()}

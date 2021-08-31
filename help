@@ -1,16 +1,16 @@
-# Manual
-1.exit()  ~~ Exit the process
-2.quit()  ~~ Exit the process
-3.test() ~~ Test the running environment
-4.help() ~~ Open the manual file
-5.clear() ~~ Clear the screen
-6.matrixDetect() ~~ To detect whether a matrix has existed or not ">> matrixDetect(A)" (No space)
-7.matrixInput() ~~ To create a matrix  ">> matrixInput(Name,row,column)" (No space)
-8.matrixAdd() ~~ To add two matrixes together ">> matrixAdd(Name1,Name2,result.Name)" (No space)
-9.matrixMinus() ~~ To minus two matrixes ">> matrixMinus(Name1,Name2,result.Name)" (No space)
-10.matrixMulti() ~~ To multiply two matrixes together">> matrixMulti(Name1,Name2,result.Name)" (No space)
-11.matrixTran() ~~ To transpose a matrix "matrixTran(Name,result.Name)" (No space)
-12.matrixScal() ~~ To scale a matrix "matrixScal(Name,scale,result.Name)" (No space)
-13.matrixDet()  ~~ To get the Det(Name).(No space)
-14.matrixInverse() ~~ To get the (Name)^-1 "matrixInverse(Name,result.Name)" (No space)
+$ Manual
+#1 exit()  ~~ Exit the process
+#2 quit()  ~~ Exit the process
+#3 test() ~~ Test the running environment
+#4 help() ~~ Open the manual file
+#5 clear() ~~ Clear the screen
+#6 matrix.Detect() ~~ To detect whether a matrix has existed or not ">> matrix.Detect(Name)"
+#7 matrix.Input() ~~ To create a matrix  ">> matrix.Input(Name,row,column)"
+#8 matrix.Add() ~~ To add two matrixes together ">> matrix.Add(Name1,Name2,result.Name)"
+#9 matrix.Minus() ~~ To minus two matrixes ">> matrix.Minus(Name1,Name2,result.Name)"
+#10 matrix.Multi() ~~ To multiply two matrixes together">> matrix.Multi(Name1,Name2,result.Name)"
+#11 matrix.Tran() ~~ To transpose a matrix "matrix.Tran(Name,result.Name)"
+#12 matrix.Scale() ~~ To scale a matrix "matrix.Scale(Name,scale,result.Name)"
+#13 matrix.Det()  ~~ To get the Det(Name).
+#14 matrix.Inv() ~~ To get the (Name)^-1 "matrix.Inv(Name,result.Name)"
 END
