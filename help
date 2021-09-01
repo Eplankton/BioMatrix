@@ -13,4 +13,6 @@ $ Manual
 #12 matrix.Scale() ~~ To scale a matrix "matrix.Scale(Name,scale,result.Name)"
 #13 matrix.Det()  ~~ To get the Det(Name).
 #14 matrix.Inv() ~~ To get the (Name)^-1 "matrix.Inv(Name,result.Name)"
+#15 vector.Dot() ~~ To get the dot-product "vector.Dot(Name1,Name2,value.Name)"
+#16 vector.Cross() ~~ To get the cross-product "vector.Cross(Name1,Name2,vector.Name)"
 END

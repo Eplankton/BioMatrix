@@ -18,5 +18,5 @@ vector.Mag()#15
 vector.Angle()#16
 vector.Normal()#17
 matrix.Delete()#18
-number.Delete()#19
+valule.Delete()#19
 END

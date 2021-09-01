@@ -28,17 +28,19 @@ matrix.Multi((A+B),B,C)
 matrix.Inv(C,C^-1)
 matrix.Multi(C^-1,((A+B)*(B^T))^-1,D)
 matrix.Multi(I,D,Answer)
-matrix.Detect(Answer)
+matrix.Show(Answer)
 matrix.Add(Answer,Zero,M)
 
-matrix.Input(a,5,1):
-1.2
-2.3
-3.4
-4.5
-5.6
+matrix.Input(vector.a,5,1):
+1.2 2.3 3.4 4.5 5.6
 
-matrix.Multi(M,a,(M->a))
-matrix.Detect((M->a))
+matrix.Multi(M,vector.a,M->vector.a)
+matrix.Show(M->vector.a)
+
+matrix.Input(vector.test,5,1):
+1.3 2.2 3.7 9.5 5.7
+
+matrix.Tran(vector.a,a^T)
+matrix.Multi(a^T,vector.test,RESULT)
 
 exit()

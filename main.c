@@ -2,10 +2,10 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
+#include <math.h>
 #include <stdlib.h>
 #include "expand.h"
 #include "function.h"
-
 
 int main()
 {
@@ -47,7 +47,7 @@ int main()
             matrixInput(userInput);
             break;
         case 5:
-            matrixDetect(userInput);
+            matrixShow(userInput);
             break;
         case 6:
             matrixAdd(userInput);
@@ -69,6 +69,13 @@ int main()
             break;
         case 12:
             matrixInv(userInput);
+            break;
+        case 13:
+            vectorDot(userInput);
+            break;
+        case 14:
+            vectorCross(userInput);
+            break;
             //Add cases here.
 
         case 0: //Confirm the order {search()}
