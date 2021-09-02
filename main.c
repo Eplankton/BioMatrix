@@ -14,7 +14,7 @@ int main()
     time(&rawtime);
     info = localtime(&rawtime);
 
-    printf("\n\033[32;1mBioMatrix\033[0m v0.0.1 %sType 'help()' for manual information.\n", asctime(info)); //System.time & version
+    printf("\n\033[32;1mBioMatrix\033[0m 1.0.2 \n%sType 'help()' for manual information.\n", asctime(info)); //System.time & version
 
     int key = 0, i = 0;
     char userInput[64];
@@ -76,9 +76,21 @@ int main()
         case 14:
             vectorCross(userInput);
             break;
-            //Add cases here.
+        case 15:
+            vectorMag(userInput);
+            break;
+        case 16:
+            vectorAngle(userInput);
+            break;
+        case 19:
+            matrixDelete(userInput);
+            break;
+        case 20:
+            valueDelete(userInput);
+            break;
 
-        case 0: //Confirm the order {search()}
+            //Add cases here.
+        case 0: //Confirm the order.
             while (getchar() != '\n')
                 ;
             break;
