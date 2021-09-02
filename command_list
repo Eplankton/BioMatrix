@@ -31,6 +31,7 @@ vector.i()#17
 vector.n()#18
 
 matrix.Del()#19
+vector.Del()#19
 value.Del()#20
 
 END
