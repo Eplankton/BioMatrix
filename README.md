@@ -1,4 +1,4 @@
-# Biomatrix
+# BioMatrix
 Interactive shell matrix calculation
 
 ###### Manual ######
