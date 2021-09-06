@@ -318,7 +318,6 @@ void matrixInput(char *userInput)
         else
         {
             printf("\n[\033[31;1mError\033[0m]:\033[31;1m Invalid_input\033[0m\n");
-            printf("\n[\033[36;1mHelp\033[0m]:\033[37;1m >> matrix.In(A,row,column)\033[0m\n");
         }
     }
     else
@@ -371,7 +370,6 @@ void matrixShow(char *userInput)
         else
         {
             printf("\n[\033[31;1mError\033[0m]:\033[31;1m Invalid_input\033[0m\n");
-            printf("\n[\033[36;1mHelp\033[0m]:\033[37;1m >> matrix.Out(A)\033[0m\n");
         }
 
         fclose(fp);
@@ -2093,13 +2091,11 @@ int matrixDelete(char *userInput)
             remove("temp");
 
             matrixName[strlen(matrixName) - 1] = '\0';
+            printf("\n[\033[32;1mMatrix\033[0m]: \033[33;1m%s\033[0m has been deleted.\n", matrixName);
+
             if (check == 0)
             {
                 printf("\n[\033[31;1mError\033[0m]:\033[31;1m Matrix Not_Found\033[0m \033[33;1m <~ %s\033[0m\n", matrixName);
-            }
-            else
-            {
-                printf("\n[\033[32;1mMatrix\033[0m]: \033[33;1m%s\033[0m has been deleted.\n", matrixName);
             }
         }
         else
@@ -2107,6 +2103,7 @@ int matrixDelete(char *userInput)
             printf("\n[\033[31;1mError\033[0m]:\033[31;1m Invalid_input\033[0m\n");
         }
 
+        fclose(fp);
     }
     else
     {
@@ -2929,6 +2926,7 @@ int valueDelete(char *userInput)
             printf("\n[\033[31;1mError\033[0m]:\033[31;1m Invalid_input\033[0m\n");
         }
 
+        fclose(fp);
     }
     else
     {
