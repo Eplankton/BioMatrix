@@ -14,4 +14,4 @@ A: You will need file 'main.c' & 'function.c' & 'expand.h' , you can find them i
    #2 If you need icon (under Windows) , find 'bm.o' & 'bm.ico' in 'icon' ,put them together with files beyond , then >> gcc main.c bm.o -o biomatrix
    
 Q: Direct use ?
-A: Download the version you need as .zip , extract it and double click(win) , or you can use terminal(recommend)
+A: Download the version you need as .zip , extract it and double click(win) , or you can use terminal(recommend/linux) , I suggest use Windows Terminal personally.
