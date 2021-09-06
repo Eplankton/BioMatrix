@@ -14,7 +14,7 @@ int main()
     time(&rawtime);
     info = localtime(&rawtime);
 
-    printf("\n\033[32;1mBioMatrix\033[0m 1.0.2 \n%sType 'help()' for manual information.\n", asctime(info)); //System.time & version
+    printf("\n\033[32;1mBioMatrix\033[0m 1.0.2 \n%sType 'help()' for Manual.\n", asctime(info)); //System.time & version
 
     int key = 0, i = 0;
     char userInput[64];

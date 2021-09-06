@@ -12,22 +12,22 @@ void help();                                  //Help manual.(2)
 void clear();                                 //Clear the screen.(3)
 void matrixInput(char *);                     //To input a matrix.(4)
 void matrixShow(char *);                      //To detect a matrix.(5)
-void matrixExtract(struct matrix *, float *); //To import a matrix from 'matrixstream'.
-int matrixEmploy(struct matrix *);            //To confirm a matrix and return its name/row/column.
+void matrixExtract(struct matrix *, float *); //To import a matrix from 'matrixstream'.(Invisible to user)
+int matrixEmploy(struct matrix *);            //To confirm a matrix and return its name/row/column.(Invisible to user)
 void matrixAdd(char *);                       //To add two matrixes together.(6)
 void matrixMinus(char *);                     //To minus two matrixes.(7)
 void matrixMulti(char *);                     //To multiply two matrixes together at accuracy.(8)
 void matrixTran(char *);                      //To transpose a matrix.(9)
 void matrixScale(char *);                     //To scalar multiplay a matrix.(10)
 void matrixDet(char *);                       //To get the Det(matrix) under 20.(11)
-float Det(struct matrix *, float *);          //To get the Det.
+float Det(struct matrix *, float *);          //To get the Det.(Invisible to user)
 void matrixInv(char *);                       //To inverse a matrix.(12)
-int matrixDelete(char *);
-float vectorDot(char *);
-void vectorCross(char *);
-double vectorMag(char *);
-double vectorAngle(char *);
-int valueDelete(char *);
+int matrixDelete(char *);                     //To delete a matrix.(19)
+float vectorDot(char *);                      //To calculate the dot-product of two vectors result into a value.(13)
+void vectorCross(char *);                     //To calculate the crodd-product of two vectors result into a new vector.(14)
+double vectorMag(char *);                     //To calculate the norm of a vector.(15)
+double vectorAngle(char *);                   //To calculate the angle of two vector show as arccos(x) into a value.(16)
+int valueDelete(char *);                      //To delete a value.(20)
 
 int search(char *userInput)
 {
@@ -1104,7 +1104,7 @@ void matrixMulti(char *userInput)
 
                     if (result.row == 1 && result.column == 1) //If result is a 1x1 matrix.
                     {
-                        printf("\n[\033[36;1mSystem.Out\033[0m]: '\033[33;1m%s\033[0m' is an value.\n", result.name);
+                        printf("\n[\033[36;1mSystem.Out\033[0m]: \033[33;1m%s\033[0m is an value.\n", result.name);
                         FILE *fvalue = NULL;
                         fvalue = fopen("value", "a+");
                         fprintf(fvalue, "\n%s<%d,%d>\n%g\n#\n", result.name, result.row, result.column, matrixAns[0][0]);
@@ -1606,7 +1606,7 @@ void matrixDet(char *userInput)
 
             printf("\n[\033[32;1mValue\033[0m]: \033[33;1mDet(%s)\033[0m has been saved.\n", former.name);
             printf("\033[37;1m[ %g ]\033[0m\n", result);
-            printf("\n[\033[36;1mSystem.Out\033[0m]: '\033[33;1mDet(%s)\033[0m' is an value.\n", former.name);
+            printf("\n[\033[36;1mSystem.Out\033[0m]: \033[33;1mDet(%s)\033[0m is an value.\n", former.name);
             FILE *fvalue = NULL;
             fvalue = fopen("value", "a+");
             fprintf(fvalue, "\nDet(%s)<1,1>\n%g\n#\n", former.name, result);
@@ -1967,6 +1967,7 @@ int matrixDelete(char *userInput)
             {
                 fgets(buff, 64, (FILE *)fp);
                 len = strlen(matrixName);
+
                 if (strncmp(buff, matrixName, len) == 0 && check == 0)
                 {
                     check = 1;
@@ -1977,7 +1978,21 @@ int matrixDelete(char *userInput)
                 }
                 else
                 {
-                    fprintf((FILE *)ftemp, buff);
+                    if (strchr(buff, '#') != NULL)
+                    {
+                        fputc(buff[0], (FILE *)ftemp);
+                        fputc('\n', (FILE *)ftemp);
+                    }
+                    else
+                    {
+                        fprintf((FILE *)ftemp, buff);
+                    }
+                }
+
+                int i = 0;
+                for (i = 0; i < 63; i++)
+                {
+                    buff[i] = '\0';
                 }
             }
 
@@ -1987,12 +2002,23 @@ int matrixDelete(char *userInput)
             remove("matrix");
             fp = fopen("matrix", "a+");
             ftemp = fopen("temp", "r");
+            int i = 0;
+            for (i = 0; i < 63; i++)
+            {
+                buff[i] = '\0';
+            }
+
             while (!feof(ftemp))
             {
                 fgets(buff, 64, (FILE *)ftemp);
 
                 fprintf((FILE *)fp, buff);
+                for (i = 0; i < 63; i++)
+                {
+                    buff[i] = '\0';
+                }
             }
+
             fclose(ftemp);
             fclose(fp);
             remove("temp");
@@ -2004,10 +2030,16 @@ int matrixDelete(char *userInput)
 
             len = 0;
             check = 0;
+            for (i = 0; i < 63; i++)
+            {
+                buff[i] = '\0';
+            }
+
             while (!feof(fp2))
             {
                 fgets(buff, 64, (FILE *)fp2);
                 len = strlen(matrixName);
+
                 if (strncmp(buff, matrixName, len) == 0 && check == 0)
                 {
                     check = 1;
@@ -2018,7 +2050,22 @@ int matrixDelete(char *userInput)
                 }
                 else
                 {
-                    fprintf((FILE *)ftemp2, buff);
+                    if (strchr(buff, '#') != NULL)
+                    {
+                        fputc(buff[0], (FILE *)ftemp2);
+                        fputc('\n', (FILE *)ftemp2);
+                    }
+                    else
+                    {
+                        fprintf((FILE *)ftemp2, buff);
+                    }
+                }
+
+                int i = 0;
+
+                for (i = 0; i < 63; i++)
+                {
+                    buff[i] = '\0';
                 }
             }
 
@@ -2028,11 +2075,16 @@ int matrixDelete(char *userInput)
             remove("matrixstream");
             fp2 = fopen("matrixstream", "a+");
             ftemp2 = fopen("temp", "r");
+
             while (!feof(ftemp2))
             {
                 fgets(buff, 64, (FILE *)ftemp2);
 
                 fprintf((FILE *)fp2, buff);
+                for (i = 0; i < 63; i++)
+                {
+                    buff[i] = '\0';
+                }
             }
             fclose(ftemp2);
             fclose(fp2);
@@ -2246,7 +2298,7 @@ float vectorDot(char *userInput)
 
                     printf("\n[\033[32;1mValue\033[0m]: \033[33;1m%s\033[0m has been saved.\n", result.name);
                     printf("\033[37;1m[ %g ]\033[0m\n", answer);
-                    printf("\n[\033[36;1mSystem.Out\033[0m]: '\033[33;1m%s\033[0m' is an value.\n", result.name);
+                    printf("\n[\033[36;1mSystem.Out\033[0m]: \033[33;1m%s\033[0m is an value.\n", result.name);
                     FILE *fvalue = NULL;
                     fvalue = fopen("value", "a+");
                     fprintf(fvalue, "\n%s<%d,%d>\n%g\n#\n", result.name, result.row, result.column, answer);
@@ -2609,7 +2661,7 @@ double vectorMag(char *userInput)
 
             printf("\n[\033[32;1mValue\033[0m]: \033[33;1m|%s|\033[0m has been saved.\n", former.name);
             printf("\033[37;1m[ %g ]\033[0m\n", result);
-            printf("\n[\033[36;1mSystem.Out\033[0m]: '\033[33;1m|%s|\033[0m' is an value.\n", former.name);
+            printf("\n[\033[36;1mSystem.Out\033[0m]: \033[33;1m|%s|\033[0m is an value.\n", former.name);
             FILE *fvalue = NULL;
             fvalue = fopen("value", "a+");
             fprintf(fvalue, "\n|%s|<1,1>\n%g\n#\n", former.name, result);
@@ -2758,7 +2810,7 @@ double vectorAngle(char *userInput)
 
                 printf("\n[\033[32;1mValue\033[0m]: \033[33;1m%s\033[0m has been saved.\n", result.name);
                 printf("\033[37;1m[ %g ]\033[0m\n", answer);
-                printf("\n[\033[36;1mSystem.Out\033[0m]: '\033[33;1m%s\033[0m' is an value.\n", result.name);
+                printf("\n[\033[36;1mSystem.Out\033[0m]: \033[33;1m%s\033[0m is an value.\n", result.name);
 
                 FILE *fvalue = NULL;
                 fvalue = fopen("value", "a+");
@@ -2801,6 +2853,11 @@ int valueDelete(char *userInput)
             int len = 0;
             while (!feof(fp))
             {
+                int i = 0;
+                for (i = 0; i < 63; i++)
+                {
+                    buff[i] = '\0';
+                }
                 fgets(buff, 64, (FILE *)fp);
                 len = strlen(matrixName);
                 if (strncmp(buff, matrixName, len) == 0 && check == 0)
@@ -2813,21 +2870,41 @@ int valueDelete(char *userInput)
                 }
                 else
                 {
-                    fprintf((FILE *)ftemp, buff);
+                    if (strchr(buff, '#') != NULL)
+                    {
+                        fputc(buff[0], (FILE *)ftemp);
+                        fputc('\n', (FILE *)ftemp);
+                    }
+                    else
+                    {
+                        fprintf((FILE *)ftemp, buff);
+                        for (i = 0; i < 63; i++)
+                        {
+                            buff[i] = '\0';
+                        }
+                    }
                 }
             }
 
             fclose(fp);
             fclose(ftemp);
-
             remove("value");
             fp = fopen("value", "a+");
             ftemp = fopen("temp", "r");
+            int i = 0;
+            for (i = 0; i < 63; i++)
+            {
+                buff[i] = '\0';
+            }
             while (!feof(ftemp))
             {
                 fgets(buff, 64, (FILE *)ftemp);
 
                 fprintf((FILE *)fp, buff);
+                for (i = 0; i < 63; i++)
+                {
+                    buff[i] = '\0';
+                }
             }
             fclose(ftemp);
             fclose(fp);
@@ -2837,7 +2914,6 @@ int valueDelete(char *userInput)
 
             if (check == 0)
             {
-                matrixName[strlen(matrixName) - 1] = '\0';
                 printf("\n[\033[31;1mError\033[0m]:\033[31;1m Value Not_Found\033[0m \033[33;1m <~ %s\033[0m\n", matrixName);
             }
             else

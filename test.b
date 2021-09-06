@@ -59,4 +59,7 @@ matrix.Del(vector.a)
 matrix.Del(M)
 value.Del(RESULT)
 
+matrix.In(A,2,2):
+1 2 3 4
+
 exit()
