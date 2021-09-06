@@ -1,0 +1,14 @@
+{
+    "editor.formatOnType": true,
+    "typescript.format.placeOpenBraceOnNewLineForFunctions": true,
+    "typescript.format.placeOpenBraceOnNewLineForControlBlocks": true,
+    "editor.defaultFormatter": "ms-vscode.cpptools",
+    "files.associations": {
+        "*.tcc": "c",
+        "cmath": "c",
+        "limits": "c",
+        "stdio.h": "c",
+        "stdlib.h": "c",
+        "function.h": "c"
+    }
+}
