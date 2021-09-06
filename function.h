@@ -101,7 +101,7 @@ int search(char *userInput)
 
 void test()
 {
-    printf("\n[\033[32;1mSuccess\033[0m]\033[36;1m BioMatrix\033[0m (v0.0.1) is running on your environment!\n");
+    printf("\n[\033[32;1mSuccess\033[0m]\033[36;1m BioMatrix\033[0m (v1.0.3) is running on your environment!\n");
 }
 
 void help()
