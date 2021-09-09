@@ -88,7 +88,6 @@ int main()
         case 20:
             valueDelete(userInput);
             break;
-
             //Add cases here.
         case 0: //Confirm the order.
             while (getchar() != '\n')
