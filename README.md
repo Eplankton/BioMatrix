@@ -1,8 +1,11 @@
 # BioMatrix
 Interactive shell matrix calculation
+![logo](https://user-images.githubusercontent.com/86543401/132695229-d96d59a6-a43c-4869-bbcd-f4010d9d5a05.png)
+
 
 ###### Manual ######
 https://zhuanlan.zhihu.com/p/401006573
+
 https://zhuanlan.zhihu.com/p/401248294
 
 
