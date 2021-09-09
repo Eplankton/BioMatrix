@@ -318,7 +318,6 @@ void matrixInput(char *userInput)
         else
         {
             printf("\n[\033[31;1mError\033[0m]:\033[31;1m Invalid_input\033[0m\n");
-            printf("\n[\033[36;1mHelp\033[0m]:\033[37;1m >> matrix.In(A,row,column)\033[0m\n");
         }
     }
     else
@@ -371,7 +370,6 @@ void matrixShow(char *userInput)
         else
         {
             printf("\n[\033[31;1mError\033[0m]:\033[31;1m Invalid_input\033[0m\n");
-            printf("\n[\033[36;1mHelp\033[0m]:\033[37;1m >> matrix.Out(A)\033[0m\n");
         }
 
         fclose(fp);
@@ -2093,20 +2091,17 @@ int matrixDelete(char *userInput)
             remove("temp");
 
             matrixName[strlen(matrixName) - 1] = '\0';
+            printf("\n[\033[32;1mMatrix\033[0m]: \033[33;1m%s\033[0m has been deleted.\n", matrixName);
+
             if (check == 0)
             {
                 printf("\n[\033[31;1mError\033[0m]:\033[31;1m Matrix Not_Found\033[0m \033[33;1m <~ %s\033[0m\n", matrixName);
-            }
-            else
-            {
-                printf("\n[\033[32;1mMatrix\033[0m]: \033[33;1m%s\033[0m has been deleted.\n", matrixName);
             }
         }
         else
         {
             printf("\n[\033[31;1mError\033[0m]:\033[31;1m Invalid_input\033[0m\n");
         }
-
     }
     else
     {
@@ -2680,6 +2675,118 @@ double vectorMag(char *userInput)
     return result;
 }
 
+int valueDelete(char *userInput)
+{
+    int check = 0;
+    FILE *fp = NULL;
+    fp = fopen("value", "r");
+
+    FILE *ftemp = NULL;
+    ftemp = fopen("temp", "a+");
+
+    if (fp != NULL)
+    {
+        char buff[64];
+        char *pre;
+        pre = strchr(userInput, '(') + sizeof(char);
+        char matrixName[strlen(pre)];
+        int i = 0;
+        for (i = 0; i < strlen(pre) - 1; i++)
+        {
+            matrixName[i] = pre[i];
+        }
+        //userInput as 'matrixInput(test)', matrixName = "test"
+        matrixName[strlen(pre) - 1] = '<';
+
+        if (strlen(matrixName) != 0)
+        {
+            fclose(fp);
+            fp = fopen("value", "r");
+
+            int len = 0;
+            while (!feof(fp))
+            {
+                int i = 0;
+                for (i = 0; i < 63; i++)
+                {
+                    buff[i] = '\0';
+                }
+                fgets(buff, 64, (FILE *)fp);
+                len = strlen(pre);
+                if (strncmp(buff, matrixName, len) == 0 && check == 0)
+                {
+                    check = 1;
+                    while (strchr(buff, '#') == NULL)
+                    {
+                        fgets(buff, 64, (FILE *)fp);
+                    }
+                }
+                else
+                {
+                    if (strchr(buff, '#') != NULL)
+                    {
+                        fputc(buff[0], (FILE *)ftemp);
+                        fputc('\n', (FILE *)ftemp);
+                    }
+                    else
+                    {
+                        fprintf((FILE *)ftemp, buff);
+                        for (i = 0; i < 63; i++)
+                        {
+                            buff[i] = '\0';
+                        }
+                    }
+                }
+            }
+
+            fclose(fp);
+            fclose(ftemp);
+            remove("value");
+            fp = fopen("value", "a+");
+            ftemp = fopen("temp", "r");
+            int i = 0;
+            for (i = 0; i < 63; i++)
+            {
+                buff[i] = '\0';
+            }
+            while (!feof(ftemp))
+            {
+                fgets(buff, 64, (FILE *)ftemp);
+
+                fprintf((FILE *)fp, buff);
+                for (i = 0; i < 63; i++)
+                {
+                    buff[i] = '\0';
+                }
+            }
+            fclose(ftemp);
+            fclose(fp);
+            remove("temp");
+
+            matrixName[strlen(pre) - 1] = '\0';
+
+            if (check == 0)
+            {
+                printf("\n[\033[31;1mError\033[0m]:\033[31;1m Value Not_Found\033[0m \033[33;1m <~ %s\033[0m\n", matrixName);
+            }
+            else
+            {
+                printf("\n[\033[32;1mValue\033[0m]: \033[33;1m%s\033[0m has been deleted.\n", matrixName);
+            }
+        }
+        else
+        {
+            printf("\n[\033[31;1mError\033[0m]:\033[31;1m Invalid_input\033[0m\n");
+        }
+    }
+    else
+    {
+        printf("\n[\033[31;1mError\033[0m]:\033[31;1m No value exists\033[0m\n");
+    }
+
+    return check;
+}
+
 double vectorAngle(char *userInput)
 {
     double answer = 0;
@@ -2798,7 +2905,7 @@ double vectorAngle(char *userInput)
                 strcat(dothead, cut);
                 strcat(dothead, latter.name);
                 strcat(dothead, cut);
-                strcat(dothead, "");
+                strcat(dothead, "TEMP");
                 strcat(dothead, tail);
 
                 char magone[64] = "vector.Mag(";
@@ -2819,6 +2926,27 @@ double vectorAngle(char *userInput)
                 fvalue = fopen("value", "a+");
                 fprintf(fvalue, "\n%s<1,1>\n%g\n#\n", result.name, answer);
                 fclose(fvalue);
+
+                char delsec[64] = "vector.Del(";
+                strcat(delsec, "|");
+                strcat(delsec, latter.name);
+                strcat(delsec, "|");
+                strcat(delsec, tail);
+
+                char delone[64] = "vector.Del(";
+                strcat(delone, "|");
+                strcat(delone, former.name);
+                strcat(delone, "|");
+                strcat(delone, tail);
+
+                char deltemp[64] = "value.Del(";
+                const char *tep = "TEMP";
+                strcat(deltemp, tep);
+                strcat(deltemp, tail);
+
+                valueDelete(delone);
+                valueDelete(delsec);
+                valueDelete(deltemp);
             }
         }
         else
@@ -2829,111 +2957,4 @@ double vectorAngle(char *userInput)
 
     fclose(fp);
     return answer;
-}
-
-int valueDelete(char *userInput)
-{
-    int check = 0;
-    FILE *fp = NULL;
-    fp = fopen("value", "r");
-
-    FILE *ftemp = NULL;
-    ftemp = fopen("temp", "a+");
-
-    if (fp != NULL)
-    {
-        char buff[64];
-        char *matrixName;
-
-        matrixName = strchr(userInput, '(') + sizeof(char); //userInput as 'matrixInput(test)', matrixName = "test"
-        matrixName[strlen(matrixName) - 1] = '<';
-
-        if (strlen(matrixName) != 0)
-        {
-            fclose(fp);
-            fp = fopen("value", "r");
-
-            int len = 0;
-            while (!feof(fp))
-            {
-                int i = 0;
-                for (i = 0; i < 63; i++)
-                {
-                    buff[i] = '\0';
-                }
-                fgets(buff, 64, (FILE *)fp);
-                len = strlen(matrixName);
-                if (strncmp(buff, matrixName, len) == 0 && check == 0)
-                {
-                    check = 1;
-                    while (strchr(buff, '#') == NULL)
-                    {
-                        fgets(buff, 64, (FILE *)fp);
-                    }
-                }
-                else
-                {
-                    if (strchr(buff, '#') != NULL)
-                    {
-                        fputc(buff[0], (FILE *)ftemp);
-                        fputc('\n', (FILE *)ftemp);
-                    }
-                    else
-                    {
-                        fprintf((FILE *)ftemp, buff);
-                        for (i = 0; i < 63; i++)
-                        {
-                            buff[i] = '\0';
-                        }
-                    }
-                }
-            }
-
-            fclose(fp);
-            fclose(ftemp);
-            remove("value");
-            fp = fopen("value", "a+");
-            ftemp = fopen("temp", "r");
-            int i = 0;
-            for (i = 0; i < 63; i++)
-            {
-                buff[i] = '\0';
-            }
-            while (!feof(ftemp))
-            {
-                fgets(buff, 64, (FILE *)ftemp);
-
-                fprintf((FILE *)fp, buff);
-                for (i = 0; i < 63; i++)
-                {
-                    buff[i] = '\0';
-                }
-            }
-            fclose(ftemp);
-            fclose(fp);
-            remove("temp");
-
-            matrixName[strlen(matrixName) - 1] = '\0';
-
-            if (check == 0)
-            {
-                printf("\n[\033[31;1mError\033[0m]:\033[31;1m Value Not_Found\033[0m \033[33;1m <~ %s\033[0m\n", matrixName);
-            }
-            else
-            {
-                printf("\n[\033[32;1mValue\033[0m]: \033[33;1m%s\033[0m has been deleted.\n", matrixName);
-            }
-        }
-        else
-        {
-            printf("\n[\033[31;1mError\033[0m]:\033[31;1m Invalid_input\033[0m\n");
-        }
-
-    }
-    else
-    {
-        printf("\n[\033[31;1mError\033[0m]:\033[31;1m No value exists\033[0m\n");
-    }
-
-    return check;
 }
