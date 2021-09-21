@@ -1,6 +1,6 @@
 # Biomatrix
 Interactive shell matrix calculation
-![logo](https://user-images.githubusercontent.com/86543401/132695229-d96d59a6-a43c-4869-bbcd-f4010d9d5a05.png)
+![logo](https://user-images.githubusercontent.com/86543401/134177574-312676a9-ff31-4e4a-b000-cd8a42bcf4af.png)
 
 
 ###### Manual ######
