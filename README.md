@@ -1,9 +1,13 @@
-# BioMatrix
+# Biomatrix
 Interactive shell matrix calculation
+
+
 
 ###### Manual ######
 https://zhuanlan.zhihu.com/p/401006573
+
 https://zhuanlan.zhihu.com/p/401248294
+![logo](https://user-images.githubusercontent.com/86543401/134178104-5c655c5b-7fdb-40d5-9669-838649a99391.png)
 
 
 Q: How to compile by myself？
