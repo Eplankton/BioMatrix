@@ -1,5 +1,5 @@
 # Biomatrix
-Interactive shell matrix calculation
+Interactive shell matrix calculation language.
 
 
 
@@ -11,7 +11,7 @@ https://zhuanlan.zhihu.com/p/401248294
 
 
 Q: How to compile by myself？
-A: You will need file 'main.c' & 'function.c' & 'expand.h' , you can find them in file 'src' , also 'command_list' & 'help' is necessary.
+A: You will need file 'main.c' & 'function.c' & 'extension.h' , you can find them in file 'src' , also 'command_list' & 'help' is necessary.
 
    #1 If you don't need icon >> gcc main.c -o biomatrix
    
