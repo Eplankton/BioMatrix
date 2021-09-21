@@ -1,4 +1,6 @@
 //From: Eplankton Date: 2021/8/12
+
+const char version[] = "1.0.5";
 struct matrix
 {
     char *name;
@@ -22,12 +24,15 @@ void matrixScale(char *);                     //To scalar multiplay a matrix.(10
 void matrixDet(char *);                       //To get the Det(matrix) under 20.(11)
 float Det(struct matrix *, float *);          //To get the Det.(Invisible to user)
 void matrixInv(char *);                       //To inverse a matrix.(12)
-int matrixDelete(char *);                     //To delete a matrix.(19)
 float vectorDot(char *);                      //To calculate the dot-product of two vectors result into a value.(13)
 void vectorCross(char *);                     //To calculate the crodd-product of two vectors result into a new vector.(14)
 double vectorMag(char *);                     //To calculate the norm of a vector.(15)
 double vectorAngle(char *);                   //To calculate the angle of two vector show as arccos(x) into a value.(16)
+                                              //To get the identity vector of a vector.(17)
+void vectorN0(char *);                        //To get the normal vector of two vectors.(18)
+int matrixDelete(char *);                     //To delete a matrix.(19)
 int valueDelete(char *);                      //To delete a value.(20)
+void fileDelete(char *);                      //To delete a file.(101)
 
 int search(char *userInput)
 {
@@ -101,7 +106,7 @@ int search(char *userInput)
 
 void test()
 {
-    printf("\n[\033[32;1mSuccess\033[0m]\033[36;1m BioMatrix\033[0m (v1.0.3) is running on your environment!\n");
+    printf("\n[\033[32;1mSuccess\033[0m]\033[36;1m BioMatrix\033[0m (v%s) is running on your environment!\n", version);
 }
 
 void help()
@@ -122,6 +127,34 @@ void clear()
 {
     printf("\33[2J");
     printf("\33[100A");
+}
+
+void fileDelete(char *userInput)
+{
+    int check = 0;
+    char *filename;
+    filename = strchr(userInput, '(') + sizeof(char);
+    filename[strlen(filename) - 1] = '\0';
+    if (filename != "command_list" && filename != "help" && filename != "function.h" && filename != "extension.h" && filename != "main.c")
+    {
+        check = 1;
+    }
+
+    if (check == 1)
+    {
+        if (remove(filename) == -1)
+        {
+            printf("\n[\033[31;1mError\033[0m]:\033[31;1m File Not_Found\033[0m \033[33;1m <~ %s\033[0m\n", filename);
+        }
+        else
+        {
+            printf("\n[\033[32;1mFILE\033[0m]: \033[33;1m%s\033[0m has been deleted.\n", filename);
+        }
+    }
+    else
+    {
+        printf("\n[\033[31;1mError\033[0m]:\033[31;1m System file\033[0m \033[33;1m <~ %s\033[0m\n", filename);
+    }
 }
 
 void matrixInput(char *userInput)
@@ -1838,9 +1871,9 @@ void matrixInv(char *userInput)
                         for (j = 0; j < former.column; j++)
                         {
                             if (j != 0)
-                                printf(" %g ", matrixAns[i][j]);
+                                printf(" %.3g\t ", matrixAns[i][j]);
                             else
-                                printf("[ %g ", matrixAns[i][j]);
+                                printf("[ %.3g\t ", matrixAns[i][j]);
                         }
                         printf("]\n");
                     }
@@ -2109,6 +2142,7 @@ int matrixDelete(char *userInput)
     }
 
     return check;
+    check = 0;
 }
 
 float vectorDot(char *userInput)
@@ -2578,7 +2612,7 @@ double vectorMag(char *userInput)
         former.name = strchr(userInput, '(') + 1;
         former.name[strlen(former.name) - 1] = '\0';
 
-        if (former.name[0] == '\0' && (former.row == 1 || former.column == 1) && (former.row * former.column != 1))
+        if (former.name[0] == '\0')
         {
             printf("\n[\033[31;1mError\033[0m]:\033[31;1m Not a vector\033[0m\n");
         }
@@ -2618,7 +2652,7 @@ double vectorMag(char *userInput)
 
         int check_former = matrixEmploy(p);
 
-        if (check_former != 0)
+        if (check_former != 0 && (former.row == 1 || former.column == 1) && (former.row * former.column != 1))
         {
             float matrixfirst[former.row][former.column];
             float *arone = &matrixfirst[0][0];
@@ -2657,13 +2691,17 @@ double vectorMag(char *userInput)
                 result = sqrt(yyds);
             }
 
-            printf("\n[\033[32;1mValue\033[0m]: \033[33;1m|%s|\033[0m has been saved.\n", former.name);
+            printf("\n[\033[32;1mValue\033[0m]: \033[33;1mMag(%s)\033[0m has been saved.\n", former.name);
             printf("\033[37;1m[ %g ]\033[0m\n", result);
-            printf("\n[\033[36;1mSystem.Out\033[0m]: \033[33;1m|%s|\033[0m is an value.\n", former.name);
+            printf("\n[\033[36;1mSystem.Out\033[0m]: \033[33;1mMag(%s)\033[0m is an value.\n", former.name);
             FILE *fvalue = NULL;
             fvalue = fopen("value", "a+");
-            fprintf(fvalue, "\n|%s|<1,1>\n%g\n#\n", former.name, result);
+            fprintf(fvalue, "\nMag(%s)<1,1>\n%g\n#\n", former.name, result);
             fclose(fvalue);
+        }
+        else
+        {
+            printf("\n[\033[31;1mError\033[0m]:\033[31;1m Not a vector\033[0m \033[33;1m <~ %s\033[0m\n", former.name);
         }
     }
     else
@@ -2905,7 +2943,7 @@ double vectorAngle(char *userInput)
                 strcat(dothead, cut);
                 strcat(dothead, latter.name);
                 strcat(dothead, cut);
-                strcat(dothead, "TEMP");
+                strcat(dothead, "TEMP_VAL");
                 strcat(dothead, tail);
 
                 char magone[64] = "vector.Mag(";
@@ -2928,19 +2966,19 @@ double vectorAngle(char *userInput)
                 fclose(fvalue);
 
                 char delsec[64] = "vector.Del(";
-                strcat(delsec, "|");
+                strcat(delsec, "Mag(");
                 strcat(delsec, latter.name);
-                strcat(delsec, "|");
+                strcat(delsec, ")");
                 strcat(delsec, tail);
 
                 char delone[64] = "vector.Del(";
-                strcat(delone, "|");
+                strcat(delone, "Mag(");
                 strcat(delone, former.name);
-                strcat(delone, "|");
+                strcat(delone, ")");
                 strcat(delone, tail);
 
                 char deltemp[64] = "value.Del(";
-                const char *tep = "TEMP";
+                const char *tep = "TEMP_VAL";
                 strcat(deltemp, tep);
                 strcat(deltemp, tail);
 
@@ -2957,4 +2995,142 @@ double vectorAngle(char *userInput)
 
     fclose(fp);
     return answer;
+}
+
+void vectorN0(char *userInput)
+{
+    struct matrix former;
+    struct matrix latter;
+    struct matrix result;
+
+    struct matrix *p = &former;
+    struct matrix *q = &latter;
+
+    int len = 0, cnt = 0, k = 0;
+    for (k = 0; k < 63; k++)
+    {
+        if (userInput[k] == ',')
+        {
+            cnt++;
+        }
+    }
+    k = 0;
+
+    FILE *fp = NULL;
+    fp = fopen("matrix", "a+");
+    if (fp == NULL)
+    {
+        printf("\n[\033[31;1mError\033[0m]:\033[31;1m No matrix exists\033[0m\n");
+    }
+    else
+    {
+        if (cnt >= 2)
+        {
+            int j = 0, check = 0;
+            const char cut[] = ",";
+            const char cap[2] = "(";
+            char *token;
+            char buff[64];
+
+            token = strtok(userInput, cut);
+
+            former.name = strchr(token, '(') + sizeof(char);
+
+            while (token != NULL && j < 2 && cnt >= 2)
+            {
+                switch (j)
+                {
+                case 0:
+                    token = strtok(NULL, cut);
+                    latter.name = token;
+                    break;
+                case 1:
+                    token = strtok(NULL, cut);
+                    if (token == 0)
+                    {
+                        printf("\n[\033[31;1mError\033[0m]:\033[31;1m result.name_invalid\033[0m\n");
+                    }
+                    else
+                    {
+                        int i = 0;
+                        result.name = token;
+                        result.name[strlen(token) - 1] = '\0';
+
+                        char bach[strlen(result.name) + 2];
+
+                        for (i = 0; i <= strlen(result.name) + 1; i++)
+                        {
+                            bach[i] = '0';
+                        }
+
+                        for (i = 0; i < strlen(result.name) + 1; i++)
+                        {
+                            bach[i] = result.name[i];
+                        }
+
+                        bach[strlen(result.name)] = '<';
+                        bach[strlen(result.name) + 1] = '\0';
+
+                        while (!feof(fp) && check == 0)
+                        {
+                            fgets(buff, 64, (FILE *)fp);
+                            len = strlen(bach);
+                            if (strncmp(buff, bach, len) == 0 && check == 0) //Whether userInput is a useable matrixName.
+                            {
+                                printf("\n[\033[31;1mError\033[0m]:\033[31;1m result.name existed\033[0m \033[33;1m<~ %s\033[0m\n", result.name);
+                                check = 1;
+                            }
+                        }
+                    }
+
+                    break;
+                }
+                j++;
+            }
+
+            char head[64] = "vector.Cross(";
+            const char tail[] = ")";
+            strcat(head, former.name);
+            strcat(head, cut);
+            strcat(head, latter.name);
+            strcat(head, cut);
+            strcat(head, "TEMP_VCT");
+            strcat(head, tail);
+            vectorCross(head);
+
+            char imd[64] = "vector.Mag(";
+            strcat(imd, "TEMP_VCT");
+            strcat(imd, tail);
+
+            double sox = 1.0 / vectorMag(imd);
+
+            char VAL[21];
+            sprintf(VAL, "%g", sox);
+            char Hal[64] = "matrix.Scale(";
+            strcat(Hal, "TEMP_VCT");
+            strcat(Hal, cut);
+            strcat(Hal, VAL);
+            strcat(Hal, cut);
+            strcat(Hal, result.name);
+            strcat(Hal, tail);
+            matrixScale(Hal);
+
+            char delone[64] = "value.Del(";
+            strcat(delone, "Mag(TEMP_VCT)");
+            strcat(delone, tail);
+
+            char delsec[64] = "vector.Del(";
+            strcat(delsec, "TEMP_VCT");
+            strcat(delsec, tail);
+
+            fclose(fp);
+            valueDelete(delone);
+            matrixDelete(delsec);
+        }
+        else
+        {
+            printf("\n[\033[31;1mError\033[0m]:\033[31;1m Invalid_input \033[0m\n");
+            printf("\n[\033[36;1mHelp\033[0m]:\033[37;1m >> vector.N0(a,b,result.name)\033[0m\n");
+        }
+    }
 }

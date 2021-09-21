@@ -10,7 +10,7 @@ $ Manual
 #9 matrix.Minus() ~~ To minus two matrixes ">> matrix.Minus(Name1,Name2,result.Name)"
 #10 matrix.Multi() ~~ To multiply two matrixes together">> matrix.Multi(Name1,Name2,result.Name)"
 #11 matrix.Tran() ~~ To transpose a matrix ">> matrix.Tran(Name,result.Name)"
-#12 matrix.Scale() ~~ To scale a matrix ">> matrix.Scale(Name,scale,result.Name)"
+#12 matrix.Scale() ~~ To scale a matrix ">> matrix.Scale(Name,scalar,result.Name)"
 #13 matrix.Det()  ~~ To get the Det(Name). ">> matrix.Det(Name)"
 #14 matrix.Inv() ~~ To get the (Name)^-1 ">> matrix.Inv(Name,result.Name)"
 #15 vector.Dot() ~~ To get the dot-product ">> vector.Dot(Name1,Name2,value.Name)"

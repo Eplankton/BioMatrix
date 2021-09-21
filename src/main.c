@@ -4,31 +4,33 @@
 #include <time.h>
 #include <math.h>
 #include <stdlib.h>
-#include "expand.h"
+#include "extension.h"
 #include "function.h"
 
 int main()
 {
+    const char *sig = ">>";
     time_t rawtime;
     struct tm *info;
     time(&rawtime);
     info = localtime(&rawtime);
 
-    printf("\n\033[32;1mBioMatrix\033[0m 1.0.3 \n%sType 'help()' for Manual.\n", asctime(info)); //System.time & version
+    printf("\n\033[32;1mBiomatrix\033[0m %s \n%sType 'help()' for Manual.\n", version, asctime(info)); //System.time & version
 
-    int key = 0, i = 0;
+    int key, i;
     char userInput[64];
 
     while (key >= 0)
     {
-        for (i = 0; i < 63; i++)
+        for (i = 0; i < 64; i++)
         {
             userInput[i] = '\0';
         }
+
         i = 0;
         key = 0;
 
-        printf("\n\033[33;1m>> \033[0m");
+        printf("\n\033[33;1m%s \033[0m", sig);
         scanf("%s", userInput);
         key = search(userInput);
 
@@ -82,6 +84,12 @@ int main()
         case 16:
             vectorAngle(userInput);
             break;
+        //case 17:
+            //vectorI0(userInput);
+            //break;
+        case 18:
+            vectorN0(userInput);
+            break;
         case 19:
             matrixDelete(userInput);
             break;
@@ -93,8 +101,11 @@ int main()
             while (getchar() != '\n')
                 ;
             break;
-
         case -1: //Exit the process(-1) {exit() & quit()}
+            break;
+
+        case 101:
+            fileDelete(userInput);
             break;
         }
     }
