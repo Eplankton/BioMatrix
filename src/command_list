@@ -1,6 +1,5 @@
 exit()#-1
 quit()#-1
-file.Del()#101
 test()#1
 help()#2
 clear()#3
@@ -16,16 +15,16 @@ matrix.Det()#11
 matrix.Inv()#12
 matrix.Del()#19
 
-mat.In()#4
-mat.Out()#5
-mat.Add()#6
-mat.Minus()#7
-mat.Multi()#8
-mat.Tran()#9
-mat.Scale()#10
-mat.Det()#11
-mat.Inv()#12
-mat.Del()#19
+mat.in()#4
+mat.out()#5
+mat.add()#6
+mat.minus()#7
+mat.multi()#8
+mat.tran()#9
+mat.scale()#10
+mat.det()#11
+mat.inv()#12
+mat.del()#19
 
 vector.In()#4
 vector.Out()#5
@@ -42,22 +41,25 @@ vector.I0()#17
 vector.N0()#18
 vector.Del()#19
 
-vct.In()#4
-vct.Out()#5
-vct.Add()#6
-vct.Minus()#7
-vct.Tran()#9
-vct.Scale()#10
-vct.Inv()#12
-vct.Dot()#13
-vct.Cross()#14
-vct.Mag()#15
-vct.Angle()#16
-vct.I0()#17
-vct.N0()#18
-vct.Del()#19
+vct.in()#4
+vct.out()#5
+vct.add()#6
+vct.minus()#7
+vct.tran()#9
+vct.scale()#10
+vct.inv()#12
+vct.dot()#13
+vct.cross()#14
+vct.mag()#15
+vct.angle()#16
+vct.i0()#17
+vct.n0()#18
+vct.del()#19
 
 value.Del()#20
-val.Del()#20
- 
+val.del()#20
+
+file.Del()#101
+file.del()#101
+
 END

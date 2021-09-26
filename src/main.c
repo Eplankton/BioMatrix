@@ -84,9 +84,9 @@ int main()
         case 16:
             vectorAngle(userInput);
             break;
-        //case 17:
-            //vectorI0(userInput);
-            //break;
+        case 17:
+            vectorI0(userInput);
+            break;
         case 18:
             vectorN0(userInput);
             break;
