@@ -1,0 +1,13 @@
+mat.in(A,2,2): 1 2 3 4
+mat.in(B,2,2): 2 3 4 5
+mat.add(A,B,A+B)
+mat.multi(A,A+B,A*(A+B))
+vct.in(ass,2,1): 3.1415 2.718
+vct.in(hole,2,1): 3.1415 2.718
+mat.multi(A*(A+B),ass,A*(A+B)->a)
+vct.mag(A*(A+B)->a)
+vct.angle(A*(A+B)->a,hole,theta(T..a&hole))
+file.del(matrix)
+file.del(matrixstream)
+file.del(value)
+exit()
