@@ -430,10 +430,12 @@ void matrixExtract(struct matrix *f, float *array)
     fstream = fopen("matrixstream", "r");
     char buff[64];
     int k = 0;
+
     for (k = 0; k < 63; k++)
     {
         buff[k] = '\0';
     }
+
     char *matrixName;
     int check = 0, number = 0;
     matrixName = f->name;
@@ -513,7 +515,7 @@ int matrixEmploy(struct matrix *f)
 
     for (i = 0; i <= strlen(matrixName) + 1; i++)
     {
-        prov[i] = '0';
+        prov[i] = '\0';
     }
 
     for (i = 0; i < strlen(matrixName) + 1; i++)
@@ -618,7 +620,7 @@ void matrixAdd(char *userInput)
 
                     for (i = 0; i <= strlen(result.name) + 1; i++)
                     {
-                        bach[i] = '0';
+                        bach[i] = '\0';
                     }
 
                     for (i = 0; i < strlen(result.name) + 1; i++)
@@ -819,7 +821,7 @@ void matrixMinus(char *userInput)
 
                     for (i = 0; i <= strlen(result.name) + 1; i++)
                     {
-                        bach[i] = '0';
+                        bach[i] = '\0';
                     }
 
                     for (i = 0; i < strlen(result.name) + 1; i++)
@@ -1020,7 +1022,7 @@ void matrixMulti(char *userInput)
 
                     for (i = 0; i <= strlen(result.name) + 1; i++)
                     {
-                        bach[i] = '0';
+                        bach[i] = '\0';
                     }
 
                     for (i = 0; i < strlen(result.name) + 1; i++)
@@ -1251,7 +1253,7 @@ void matrixTran(char *userInput)
 
                 for (i = 0; i <= strlen(result.name) + 1; i++)
                 {
-                    bach[i] = '0';
+                    bach[i] = '\0';
                 }
 
                 for (i = 0; i < strlen(result.name) + 1; i++)
@@ -1433,7 +1435,7 @@ void matrixScale(char *userInput)
 
                     for (i = 0; i <= strlen(result.name) + 1; i++)
                     {
-                        bach[i] = '0';
+                        bach[i] = '\0';
                     }
 
                     for (i = 0; i < strlen(result.name) + 1; i++)
@@ -1722,7 +1724,7 @@ void matrixInv(char *userInput)
 
                 for (i = 0; i <= strlen(result.name) + 1; i++)
                 {
-                    bach[i] = '0';
+                    bach[i] = '\0';
                 }
 
                 for (i = 0; i < strlen(result.name) + 1; i++)
@@ -2221,7 +2223,7 @@ float vectorDot(char *userInput)
 
                     for (i = 0; i <= strlen(result.name) + 1; i++)
                     {
-                        bach[i] = '0';
+                        bach[i] = '\0';
                     }
 
                     for (i = 0; i < strlen(result.name) + 1; i++)
@@ -2428,7 +2430,7 @@ void vectorCross(char *userInput)
 
                     for (i = 0; i <= strlen(result.name) + 1; i++)
                     {
-                        bach[i] = '0';
+                        bach[i] = '\0';
                     }
 
                     for (i = 0; i < strlen(result.name) + 1; i++)
@@ -2914,7 +2916,7 @@ double vectorAngle(char *userInput)
 
                         for (i = 0; i <= strlen(result.name) + 1; i++)
                         {
-                            bach[i] = '0';
+                            bach[i] = '\0';
                         }
 
                         for (i = 0; i < strlen(result.name) + 1; i++)
@@ -3074,7 +3076,7 @@ void vectorN0(char *userInput)
 
                         for (i = 0; i <= strlen(result.name) + 1; i++)
                         {
-                            bach[i] = '0';
+                            bach[i] = '\0';
                         }
 
                         for (i = 0; i < strlen(result.name) + 1; i++)
@@ -3201,7 +3203,7 @@ void vectorI0(char *userInput)
 
                 for (i = 0; i <= strlen(result.name) + 1; i++)
                 {
-                    bach[i] = '0';
+                    bach[i] = '\0';
                 }
 
                 for (i = 0; i < strlen(result.name) + 1; i++)

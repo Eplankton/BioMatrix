@@ -17,7 +17,7 @@ int main()
 
     printf("\n\033[32;1mBiomatrix\033[0m %s \n%sType 'help()' for Manual.\n", version, asctime(info)); //System.time & version
 
-    int key, i;
+    int key = 0, i;
     char userInput[64];
 
     while (key >= 0)
