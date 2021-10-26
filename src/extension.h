@@ -1,13 +1,13 @@
 //The extension content in this headfile is taken from Web, for learning only.
 
 //From: https://zhuanlan.zhihu.com/p/305328519
-float determinant(float matrix[20][20], int order);
-float laplace_expansion(float matrix[20][20], int r, int c, int order);
+double determinant(double matrix[20][20], int order);
+double laplace_expansion(double matrix[20][20], int r, int c, int order);
 
-float determinant(float matrix[20][20], int order)
+double determinant(double matrix[20][20], int order)
 {
     int sign = 1, i;
-    float result = 0, cofactor;
+    double result = 0, cofactor;
     if (order == 1)
         result = matrix[0][0];
     else
@@ -21,9 +21,9 @@ float determinant(float matrix[20][20], int order)
     return result;
 }
 
-float laplace_expansion(float matrix[20][20], int r, int c, int order)
+double laplace_expansion(double matrix[20][20], int r, int c, int order)
 {
-    float result = 0, cofactor[20][20];
+    double result = 0, cofactor[20][20];
     int original_i, original_j, i, j;
 
     for (i = 0; i < order; i++)
@@ -53,13 +53,14 @@ float laplace_expansion(float matrix[20][20], int r, int c, int order)
 //From: https://zhuanlan.zhihu.com/p/312177505
 //#include <stdio.h>
 //#include <math.h>
-/* int rank(float matrix[20][20], int r, int c);
-float standard_echelon(float matrix[20][20], int r, int c, int x, int y);
-void show_standard_echelon(float matrix[20][20], int r, int c);
+
+/* int rank(double matrix[20][20], int r, int c);
+double standard_echelon(double matrix[20][20], int r, int c, int x, int y);
+void show_standard_echelon(double matrix[20][20], int r, int c);
 
 int main()
 {
-    float matrix[20][20];
+    double matrix[20][20];
     int i, j, r, c;
 
     printf("row:");
@@ -78,9 +79,9 @@ int main()
     return 0;
 }
 
-int rank(float matrix[20][20], int r, int c)
+int rank(double matrix[20][20], int r, int c)
 {
-    float echelon_matrix[20][20];
+    double echelon_matrix[20][20];
     int i, j, none_zero = 0, result = 0;
 
     for (i = 0; i < r; i++)
@@ -102,10 +103,10 @@ int rank(float matrix[20][20], int r, int c)
     return result;
 }
 
-float standard_echelon(float matrix[20][20], int r, int c, int x, int y)
+double standard_echelon(double matrix[20][20], int r, int c, int x, int y)
 {
     int i, j, k, l, total[20] = {0};
-    float times, temp, result = 0, original_matrix[20][20];
+    double times, temp, result = 0, original_matrix[20][20];
 
     for (i = 0; i < r; i++)
         for (j = 0; j < c; j++)
@@ -173,9 +174,9 @@ float standard_echelon(float matrix[20][20], int r, int c, int x, int y)
     return result;
 }
 
-void show_standard_echelon(float matrix[20][20], int r, int c)
+void show_standard_echelon(double matrix[20][20], int r, int c)
 {
-    float echelon_matrix[20][20];
+    double echelon_matrix[20][20];
     int i, j;
 
     for (i = 0; i < r; i++)
@@ -192,4 +193,5 @@ void show_standard_echelon(float matrix[20][20], int r, int c)
         }
         printf("\n");
     }
-} */
+} 
+*/

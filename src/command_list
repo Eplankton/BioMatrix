@@ -14,6 +14,7 @@ matrix.Scale()#10
 matrix.Det()#11
 matrix.Inv()#12
 matrix.Del()#19
+matrix.Aprox()#21
 
 mat.in()#4
 mat.out()#5
@@ -25,6 +26,7 @@ mat.scale()#10
 mat.det()#11
 mat.inv()#12
 mat.del()#19
+mat.aprox()#21
 
 vector.In()#4
 vector.Out()#5
@@ -40,6 +42,7 @@ vector.Angle()#16
 vector.I0()#17
 vector.N0()#18
 vector.Del()#19
+vector.Aprox()#21
 
 vct.in()#4
 vct.out()#5
@@ -55,6 +58,7 @@ vct.angle()#16
 vct.i0()#17
 vct.n0()#18
 vct.del()#19
+vct.aprox()#21
 
 value.Del()#20
 val.del()#20

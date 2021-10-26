@@ -8,31 +8,32 @@ struct matrix
     int column;
 };
 
-int search(char *);                           //Compare userInput with the list of command.(0)
-void test();                                  //A test process.(1)
-void help();                                  //Help manual.(2)
-void clear();                                 //Clear the screen.(3)
-void matrixInput(char *);                     //To input a matrix.(4)
-void matrixShow(char *);                      //To detect a matrix.(5)
-void matrixExtract(struct matrix *, float *); //To import a matrix from 'matrixstream'.(Invisible to user)
-int matrixEmploy(struct matrix *);            //To confirm a matrix and return its name/row/column.(Invisible to user)
-void matrixAdd(char *);                       //To add two matrixes together.(6)
-void matrixMinus(char *);                     //To minus two matrixes.(7)
-void matrixMulti(char *);                     //To multiply two matrixes together at accuracy.(8)
-void matrixTran(char *);                      //To transpose a matrix.(9)
-void matrixScale(char *);                     //To scalar multiplay a matrix.(10)
-void matrixDet(char *);                       //To get the Det(matrix) under 20.(11)
-float Det(struct matrix *, float *);          //To get the Det.(Invisible to user)
-void matrixInv(char *);                       //To inverse a matrix.(12)
-float vectorDot(char *);                      //To calculate the dot-product of two vectors result into a value.(13)
-void vectorCross(char *);                     //To calculate the crodd-product of two vectors result into a new vector.(14)
-double vectorMag(char *);                     //To calculate the norm of a vector.(15)
-double vectorAngle(char *);                   //To calculate the angle of two vector show as arccos(x) into a value.(16)
-void vectorN0(char *);                        //To get the identity vector of a vector.(17)
-void vectorI0(char *);                        //To get the normal vector of two vectors.(18)
-int matrixDelete(char *);                     //To delete a matrix.(19)
-int valueDelete(char *);                      //To delete a value.(20)
-void fileDelete(char *);                      //To delete a file.(101)
+int search(char *);                            //Compare userInput with the list of command.(0)
+void test();                                   //A test process.(1)
+void help();                                   //Help manual.(2)
+void clear();                                  //Clear the screen.(3)
+void matrixInput(char *);                      //To input a matrix.(4)
+void matrixShow(char *);                       //To detect a matrix.(5)
+void matrixExtract(struct matrix *, double *); //To import a matrix from 'matrixstream'.(Invisible to user)
+int matrixEmploy(struct matrix *);             //To confirm a matrix and return its name/row/column.(Invisible to user)
+void matrixAdd(char *);                        //To add two matrixes together.(6)
+void matrixMinus(char *);                      //To minus two matrixes.(7)
+void matrixMulti(char *);                      //To multiply two matrixes together at accuracy.(8)
+void matrixTran(char *);                       //To transpose a matrix.(9)
+void matrixScale(char *);                      //To scalar multiplay a matrix.(10)
+void matrixDet(char *);                        //To get the Det(matrix) under 20.(11)
+double Det(struct matrix *, double *);         //To get the Det.(Invisible to user)
+void matrixInv(char *);                        //To inverse a matrix.(12)
+double vectorDot(char *);                      //To calculate the dot-product of two vectors result into a value.(13)
+void vectorCross(char *);                      //To calculate the crodd-product of two vectors result into a new vector.(14)
+double vectorMag(char *);                      //To calculate the norm of a vector.(15)
+double vectorAngle(char *);                    //To calculate the angle of two vector show as arccos(x) into a value.(16)
+void vectorN0(char *);                         //To get the identity vector of a vector.(17)
+void vectorI0(char *);                         //To get the normal vector of two vectors.(18)
+int matrixDelete(char *);                      //To delete a matrix.(19)
+int valueDelete(char *);                       //To delete a value.(20)
+void matrixApproximate(char *);                //To approximate a matrix.(21)
+void fileDelete(char *);                       //To delete a file.(101)
 
 int search(char *userInput)
 {
@@ -48,7 +49,6 @@ int search(char *userInput)
         buff[i] = '\0';
     }
     i = 0;
-
     fp = fopen("command_list", "r");
 
     if (strchr(userInput, ')') == NULL || strchr(userInput, '(') == NULL)
@@ -242,8 +242,8 @@ void matrixInput(char *userInput)
                 }
             }
 
-            float save[row][column];
-            float *r = &save[0][0];
+            double save[row][column];
+            double *r = &save[0][0];
             int m = 0, n = 0, i = 0;
 
             if (check != 0)
@@ -293,7 +293,7 @@ void matrixInput(char *userInput)
                     {
                         //printf("\nThe row(\033[32;1m%d\033[0m)column(\033[32;1m%d\033[0m) = ", i + 1, j + 1);
 
-                        scanf("%g", &save[i][j]);
+                        scanf("%lf", &save[i][j]);
 
                         *r++ = save[i][j]; //Output the matrix
 
@@ -424,7 +424,7 @@ void matrixShow(char *userInput)
     }
 }
 
-void matrixExtract(struct matrix *f, float *array)
+void matrixExtract(struct matrix *f, double *array)
 {
     FILE *fstream = NULL;
     fstream = fopen("matrixstream", "r");
@@ -464,7 +464,7 @@ void matrixExtract(struct matrix *f, float *array)
                         {
                             for (j = 0; j < f->column; j++)
                             {
-                                fscanf(fstream, "%g", array);
+                                fscanf(fstream, "%lf", array);
                                 for (k = 0; k < 31; k++)
                                 {
                                     buff[k] = '\0';
@@ -659,10 +659,10 @@ void matrixAdd(char *userInput)
             {
                 if (former.row == latter.row && former.column == latter.column)
                 {
-                    float matrixfirst[former.row][former.column];
-                    float matrixsecond[latter.row][latter.column];
-                    float *arone = &matrixfirst[0][0];
-                    float *artwo = &matrixsecond[0][0];
+                    double matrixfirst[former.row][former.column];
+                    double matrixsecond[latter.row][latter.column];
+                    double *arone = &matrixfirst[0][0];
+                    double *artwo = &matrixsecond[0][0];
 
                     matrixExtract(p, arone);
                     matrixExtract(q, artwo);
@@ -694,7 +694,7 @@ void matrixAdd(char *userInput)
 
                     result.row = former.row;
                     result.column = former.column;
-                    float matrixAns[former.row][latter.column];
+                    double matrixAns[former.row][latter.column];
 
                     printf("\n[\033[32;1mMatrix\033[0m]: \033[33;1m%s\033[0m <\033[37;1m %d\033[0m,\033[37;1m %d\033[0m > has been saved.\n", result.name, result.row, result.column);
 
@@ -860,10 +860,10 @@ void matrixMinus(char *userInput)
             {
                 if (former.row == latter.row && former.column == latter.column)
                 {
-                    float matrixfirst[former.row][former.column];
-                    float matrixsecond[latter.row][latter.column];
-                    float *arone = &matrixfirst[0][0];
-                    float *artwo = &matrixsecond[0][0];
+                    double matrixfirst[former.row][former.column];
+                    double matrixsecond[latter.row][latter.column];
+                    double *arone = &matrixfirst[0][0];
+                    double *artwo = &matrixsecond[0][0];
 
                     matrixExtract(p, arone);
                     matrixExtract(q, artwo);
@@ -895,7 +895,7 @@ void matrixMinus(char *userInput)
 
                     result.row = former.row;
                     result.column = former.column;
-                    float matrixAns[former.row][latter.column];
+                    double matrixAns[former.row][latter.column];
 
                     printf("\n[\033[32;1mMatrix\033[0m]: \033[33;1m%s\033[0m <\033[37;1m %d\033[0m,\033[37;1m %d\033[0m > has been saved.\n", result.name, result.row, result.column);
 
@@ -1076,10 +1076,10 @@ void matrixMulti(char *userInput)
             {
                 if (former.column == latter.row)
                 {
-                    float matrixfirst[former.row][former.column];
-                    float matrixsecond[latter.row][latter.column];
-                    float *arone = &matrixfirst[0][0];
-                    float *artwo = &matrixsecond[0][0];
+                    double matrixfirst[former.row][former.column];
+                    double matrixsecond[latter.row][latter.column];
+                    double *arone = &matrixfirst[0][0];
+                    double *artwo = &matrixsecond[0][0];
 
                     matrixExtract(p, arone);
                     matrixExtract(q, artwo);
@@ -1111,7 +1111,7 @@ void matrixMulti(char *userInput)
 
                     result.row = former.row;
                     result.column = latter.column;
-                    float matrixAns[former.row][latter.column];
+                    double matrixAns[former.row][latter.column];
                     for (i = 0; i < result.row; i++)
                     {
                         for (j = 0; j < result.column; j++)
@@ -1121,7 +1121,7 @@ void matrixMulti(char *userInput)
                     }
 
                     int c = 0;
-                    float acc = 9e-004; //Set the accuracy if you need
+                    double acc = 9e-004; //Set the accuracy if you need
 
                     for (i = 0; i < former.row; i++)
                     {
@@ -1141,7 +1141,7 @@ void matrixMulti(char *userInput)
                         for (j = 0; j < result.column; j++)
                         {
                             if (j != 0)
-                                printf("\033[37;1m %.3g \033[0m", matrixAns[i][j]);
+                                printf("\033[37;1m %g \033[0m", matrixAns[i][j]);
                             else
                                 printf("\033[37;1m[ %g \033[0m", matrixAns[i][j]);
                         }
@@ -1165,9 +1165,9 @@ void matrixMulti(char *userInput)
                             for (j = 0; j < result.column; j++)
                             {
                                 if (j == result.column - 1)
-                                    fprintf(fp, "%.3g\n", matrixAns[i][j]);
+                                    fprintf(fp, "%g\n", matrixAns[i][j]);
                                 else
-                                    fprintf(fp, "%.3g ", matrixAns[i][j]);
+                                    fprintf(fp, "%g ", matrixAns[i][j]);
                             }
                         }
                         fprintf(fp, "#\n");
@@ -1179,7 +1179,7 @@ void matrixMulti(char *userInput)
                         {
                             for (j = 0; j < result.column; j++)
                             {
-                                fprintf(fstream, "%.3g\n", matrixAns[i][j]);
+                                fprintf(fstream, "%g\n", matrixAns[i][j]);
                             }
                         }
                         fprintf(fstream, "#\n");
@@ -1289,8 +1289,8 @@ void matrixTran(char *userInput)
 
         if (check_former != 0)
         {
-            float matrixfirst[former.row][former.column];
-            float *arone = &matrixfirst[0][0];
+            double matrixfirst[former.row][former.column];
+            double *arone = &matrixfirst[0][0];
 
             matrixExtract(p, arone);
 
@@ -1309,7 +1309,7 @@ void matrixTran(char *userInput)
 
             result.row = former.column;
             result.column = former.row;
-            float matrixAns[result.row][result.column];
+            double matrixAns[result.row][result.column];
 
             printf("\n[\033[32;1mMatrix\033[0m]: \033[33;1m%s\033[0m <\033[37;1m %d\033[0m,\033[37;1m %d\033[0m > has been saved.\n", result.name, result.row, result.column);
 
@@ -1383,7 +1383,7 @@ void matrixScale(char *userInput)
     struct matrix *p = &former;
 
     int cnt = 0, k = 0;
-    float scale = 0;
+    double scale = 0;
     for (k = 0; k < 63; k++)
     {
         if (userInput[k] == ',')
@@ -1472,8 +1472,8 @@ void matrixScale(char *userInput)
             if (check_former != 0)
             {
 
-                float matrixfirst[former.row][former.column];
-                float *arone = &matrixfirst[0][0];
+                double matrixfirst[former.row][former.column];
+                double *arone = &matrixfirst[0][0];
 
                 matrixExtract(p, arone);
                 printf("\n[\033[34;1mMatrix\033[0m]: \033[33;1m%s\033[0m < %d, %d > \n", former.name, former.row, former.column);
@@ -1491,7 +1491,7 @@ void matrixScale(char *userInput)
 
                 result.row = former.row;
                 result.column = former.column;
-                float matrixAns[result.row][result.column];
+                double matrixAns[result.row][result.column];
 
                 printf("\n[\033[32;1mMatrix\033[0m]: \033[33;1m%s\033[0m <\033[37;1m %d\033[0m,\033[37;1m %d\033[0m > has been saved.\n", result.name, result.row, result.column);
 
@@ -1613,8 +1613,8 @@ void matrixDet(char *userInput)
 
         if (check_former != 0 && (former.row == former.column))
         {
-            float matrixfirst[former.row][former.column];
-            float *arone = &matrixfirst[0][0];
+            double matrixfirst[former.row][former.column];
+            double *arone = &matrixfirst[0][0];
 
             matrixExtract(p, arone);
 
@@ -1631,7 +1631,7 @@ void matrixDet(char *userInput)
                 printf("]\n");
             }
 
-            float result = 0;
+            double result = 0;
 
             switch (former.row)
             {
@@ -1761,9 +1761,9 @@ void matrixInv(char *userInput)
         {
             if (former.row == former.column)
             {
-                float matrixfirst[former.row][former.column];
-                float matrixAns[former.row][former.column];
-                float *arone = &matrixfirst[0][0];
+                double matrixfirst[former.row][former.column];
+                double matrixAns[former.row][former.column];
+                double *arone = &matrixfirst[0][0];
 
                 matrixExtract(p, arone);
 
@@ -1786,7 +1786,7 @@ void matrixInv(char *userInput)
                     {
                     case 2:
                     {
-                        float cof = 1 / (Det(p, arone));
+                        double cof = 1 / (Det(p, arone));
                         matrixAns[0][0] = cof * matrixfirst[1][1];
                         matrixAns[0][1] = (-1) * cof * matrixfirst[0][1];
                         matrixAns[1][0] = (-1) * cof * matrixfirst[1][0];
@@ -1797,9 +1797,9 @@ void matrixInv(char *userInput)
                     case 3:
                     {
                         int m = 0, n = 0, sh = 1;
-                        float cof = 1 / (Det(p, arone));
-                        float sub[former.row - 1][former.column - 1];
-                        float *temp = &sub[0][0];
+                        double cof = 1 / (Det(p, arone));
+                        double sub[former.row - 1][former.column - 1];
+                        double *temp = &sub[0][0];
 
                         for (m = 0; m < former.row; m++)
                         {
@@ -1838,9 +1838,9 @@ void matrixInv(char *userInput)
                     default:
                     {
                         int m = 0, n = 0, sh = 1;
-                        float cof = 1 / (Det(p, arone));
-                        float sub[former.row - 1][former.column - 1];
-                        float *temp = &sub[0][0];
+                        double cof = 1 / (Det(p, arone));
+                        double sub[former.row - 1][former.column - 1];
+                        double *temp = &sub[0][0];
 
                         for (m = 0; m < former.row; m++)
                         {
@@ -1884,9 +1884,9 @@ void matrixInv(char *userInput)
                         for (j = 0; j < former.column; j++)
                         {
                             if (j != 0)
-                                printf(" %.3g\t ", matrixAns[i][j]);
+                                printf(" %g ", matrixAns[i][j]);
                             else
-                                printf("[ %.3g\t ", matrixAns[i][j]);
+                                printf("[ %g ", matrixAns[i][j]);
                         }
                         printf("]\n");
                     }
@@ -1941,13 +1941,13 @@ void matrixInv(char *userInput)
     fclose(fp);
 }
 
-float Det(struct matrix *f, float *array) //Use expansion.h
+double Det(struct matrix *f, double *array) //Use expansion.h
 {
-    float answer = 0;
+    double answer = 0;
     int i = 0, j = 0;
-    float a[f->row][f->column];
+    double a[f->row][f->column];
 
-    float matrix[20][20];
+    double matrix[20][20];
 
     for (i = 0; i < f->row; i++)
     {
@@ -2161,9 +2161,9 @@ int matrixDelete(char *userInput)
     check = 0;
 }
 
-float vectorDot(char *userInput)
+double vectorDot(char *userInput)
 {
-    float answer = 0;
+    double answer = 0;
     struct matrix former;
     struct matrix latter;
     struct matrix result;
@@ -2266,13 +2266,13 @@ float vectorDot(char *userInput)
             {
                 if (((former.row == 1 && former.column != 1) || (former.row != 1 && former.column == 1)) && ((latter.row == 1 && latter.column != 1) || (latter.row != 1 && latter.column == 1)) && ((former.row * former.column) == (latter.row * latter.column)))
                 {
-                    float matrixfirst[former.row][former.column];
-                    float matrixsecond[latter.row][latter.column];
-                    float vectorone[(former.row > former.column) ? former.row : former.column];
-                    float vectorsec[(latter.row > latter.column) ? latter.row : latter.column];
+                    double matrixfirst[former.row][former.column];
+                    double matrixsecond[latter.row][latter.column];
+                    double vectorone[(former.row > former.column) ? former.row : former.column];
+                    double vectorsec[(latter.row > latter.column) ? latter.row : latter.column];
 
-                    float *arone = &matrixfirst[0][0];
-                    float *artwo = &matrixsecond[0][0];
+                    double *arone = &matrixfirst[0][0];
+                    double *artwo = &matrixsecond[0][0];
 
                     matrixExtract(p, arone);
                     matrixExtract(q, artwo);
@@ -2469,15 +2469,15 @@ void vectorCross(char *userInput)
             {
                 if (((former.row == 3 && former.column == 1) || (former.row == 1 && former.column == 3)) && ((latter.row == 1 && latter.column == 3) || (latter.row == 3 && latter.column == 1)))
                 {
-                    float matrixfirst[former.row][former.column];
-                    float matrixsecond[latter.row][latter.column];
-                    float matrixAns[3][1];
+                    double matrixfirst[former.row][former.column];
+                    double matrixsecond[latter.row][latter.column];
+                    double matrixAns[3][1];
 
-                    float vectorone[(former.row > former.column) ? former.row : former.column];
-                    float vectorsec[(latter.row > latter.column) ? latter.row : latter.column];
+                    double vectorone[(former.row > former.column) ? former.row : former.column];
+                    double vectorsec[(latter.row > latter.column) ? latter.row : latter.column];
 
-                    float *arone = &matrixfirst[0][0];
-                    float *artwo = &matrixsecond[0][0];
+                    double *arone = &matrixfirst[0][0];
+                    double *artwo = &matrixsecond[0][0];
 
                     matrixExtract(p, arone);
                     matrixExtract(q, artwo);
@@ -2670,8 +2670,8 @@ double vectorMag(char *userInput)
 
         if (check_former != 0 && (former.row == 1 || former.column == 1) && (former.row * former.column != 1))
         {
-            float matrixfirst[former.row][former.column];
-            float *arone = &matrixfirst[0][0];
+            double matrixfirst[former.row][former.column];
+            double *arone = &matrixfirst[0][0];
 
             matrixExtract(p, arone);
 
@@ -3260,4 +3260,193 @@ void vectorI0(char *userInput)
             printf("\n[\033[36;1mHelp\033[0m]:\033[37;1m >> vector.I0(a,result.name)\033[0m\n");
         }
     }
+}
+
+void matrixApproximate(char *userInput)
+{
+    struct matrix former;
+    struct matrix result;
+    char *token;
+    int len = 0, check = 0, k = 0, cnt = 0;
+    double reduced_cof = 1e-004;
+    struct matrix *p = &former;
+    for (k = 0; k < 63; k++)
+    {
+        if (userInput[k] == ',')
+        {
+            cnt++;
+        }
+    }
+    k = 0;
+
+    FILE *fp = NULL;
+    fp = fopen("matrix", "r+");
+    if (fp == NULL)
+    {
+        printf("\n[\033[31;1mError\033[0m]:\033[31;1m No matrix exists\033[0m\n");
+    }
+    else
+    {
+        int j = 0;
+        const char cut[2] = ",";
+        const char cap[2] = "(";
+
+        char buff[64];
+
+        token = strtok(userInput, cut);
+
+        former.name = strchr(token, '(') + sizeof(char);
+
+        while (token != NULL && j < 1 && cnt >= 1)
+        {
+
+            token = strtok(NULL, cut);
+            if (token == 0)
+            {
+                printf("\n[\033[31;1mError\033[0m]:\033[31;1m result.name_invalid\033[0m\n");
+            }
+            else
+            {
+                int i = 0;
+                result.name = token;
+                result.name[strlen(token) - 1] = '\0';
+
+                char bach[strlen(result.name) + 2];
+
+                for (i = 0; i <= strlen(result.name) + 1; i++)
+                {
+                    bach[i] = '\0';
+                }
+
+                for (i = 0; i < strlen(result.name) + 1; i++)
+                {
+                    bach[i] = result.name[i];
+                }
+
+                bach[strlen(result.name)] = '<';
+                bach[strlen(result.name) + 1] = '\0';
+
+                while (!feof(fp) && check == 0)
+                {
+                    fgets(buff, 64, (FILE *)fp);
+                    len = strlen(bach);
+                    if (strncmp(buff, bach, len) == 0 && check == 0) //Whether userInput is a useable matrixName.
+                    {
+                        printf("\n[\033[31;1mError\033[0m]:\033[31;1m result.name existed\033[0m \033[33;1m<~ %s\033[0m\n", result.name);
+                        check = 1;
+                    }
+                }
+            }
+
+            break;
+        }
+        j++;
+    }
+
+    if (token != 0 && check == 0 && cnt >= 1)
+    {
+        int i = 0, j = 0;
+
+        int check_former = matrixEmploy(p);
+
+        if (check_former != 0)
+        {
+            double matrixfirst[former.row][former.column];
+            double *arone = &matrixfirst[0][0];
+
+            matrixExtract(p, arone);
+
+            printf("\n[\033[34;1mMatrix\033[0m]: \033[33;1m%s\033[0m < %d, %d > \n", former.name, former.row, former.column);
+            for (i = 0; i < former.row; i++)
+            {
+                for (j = 0; j < former.column; j++)
+                {
+                    if (j != 0)
+                        printf(" %g ", matrixfirst[i][j]);
+                    else
+                        printf("[ %g ", matrixfirst[i][j]);
+                }
+                printf("]\n");
+            }
+
+            result.row = former.row;
+            result.column = former.column;
+            double matrixAns[result.row][result.column];
+
+            printf("\n[\033[32;1mMatrix\033[0m]: \033[33;1m%s\033[0m <\033[37;1m %d\033[0m,\033[37;1m %d\033[0m > has been saved.\n", result.name, result.row, result.column);
+
+            int c = 0;
+
+            for (i = 0; i < result.row; i++)
+            {
+                for (j = 0; j < result.column; j++)
+                {
+                    if (fabs(matrixfirst[i][j]) - reduced_cof <= 0)
+                    {
+                        matrixAns[i][j] = 0;
+                    }
+                    else
+                    {
+                        if (fabs(matrixfirst[i][j] - 1) - reduced_cof <= 0)
+                        {
+                            matrixAns[i][j] = 1;
+                        }
+                        else
+                        {
+                            matrixAns[i][j] = matrixfirst[i][j];
+                        }
+                    }
+                }
+            }
+
+            for (i = 0; i < result.row; i++)
+            {
+                for (j = 0; j < result.column; j++)
+                {
+                    if (j != 0)
+                        printf("\033[37;1m %g \033[0m", matrixAns[i][j]);
+                    else
+                        printf("\033[37;1m[ %g \033[0m", matrixAns[i][j]);
+                }
+                printf("\033[37;1m]\033[0m\n");
+            }
+
+            fprintf(fp, "\n%s<%d,%d>\n", result.name, result.row, result.column);
+
+            for (i = 0; i < result.row; i++)
+            {
+                for (j = 0; j < result.column; j++)
+                {
+                    if (j == result.column - 1)
+                        fprintf(fp, "%g\n", matrixAns[i][j]);
+                    else
+                        fprintf(fp, "%g ", matrixAns[i][j]);
+                }
+            }
+            fprintf(fp, "#\n");
+
+            FILE *fstream = NULL;
+            fstream = fopen("matrixstream", "a+");
+            fprintf(fstream, "\n%s<%d,%d>\n", result.name, result.row, result.column);
+            for (i = 0; i < result.row; i++)
+            {
+                for (j = 0; j < result.column; j++)
+                {
+                    fprintf(fstream, "%g\n", matrixAns[i][j]);
+                }
+            }
+            fprintf(fstream, "#\n");
+            fclose(fstream);
+        }
+        else
+        {
+            printf("\n[\033[31;1mError\033[0m]:\033[31;1m Matrix Not_Found\033[0m \033[33;1m <~ %s\033[0m\n", former.name);
+        }
+    }
+    else
+    {
+        printf("\n[\033[31;1mError\033[0m]:\033[31;1m Invalid_input\033[0m\n");
+        printf("\n[\033[36;1mHelp\033[0m]:\033[37;1m >> matrix.Aprox(A,rA)\033[0m\n");
+    }
+    fclose(fp);
 }

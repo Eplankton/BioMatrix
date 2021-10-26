@@ -96,6 +96,8 @@ int main()
         case 20:
             valueDelete(userInput);
             break;
+        case 21:
+            matrixApproximate(userInput);
             //Add cases here.
         case 0: //Confirm the order.
             while (getchar() != '\n')

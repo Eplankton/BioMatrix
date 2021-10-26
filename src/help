@@ -19,4 +19,5 @@ $ Manual
 #18 vector.Angle() ~~ To get the angle of two vector ">> vector.Mag(Name1,Name2,Theta)"
 #19 matrix.Del() ~~ To delete a matrix ">> matrix.Del(Name)"
 #20 value.Del() ~~ To delete a value ">> value.Del(Name)"
+#21 matrix.Aprox() ~~ To make a matrix reduced ">> matrix.Aprox(Name,result.Name)"
 END
