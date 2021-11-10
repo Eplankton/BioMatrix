@@ -3033,6 +3033,7 @@ double vectorAngle(char *userInput)
                 if (check == 1)
                 {
                     printf("\n[\033[31;1mWarning\033[0m]:\033[31;1m Value Existed\033[0m \033[33;1m <~ %s\033[0m\n", result.name);
+                    fclose(fvalue);
                 }
                 else
                 {
@@ -3045,7 +3046,6 @@ double vectorAngle(char *userInput)
                     fprintf(fvalue, "\n%s<1,1>\n%g\n#\n", result.name, answer);
                     fclose(fvalue);
                 }
-                fclose(fvalue);
 
                 char delsec[64] = "vector.Del(";
                 strcat(delsec, "Mag(");
