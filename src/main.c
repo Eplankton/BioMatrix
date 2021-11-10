@@ -1,4 +1,7 @@
-//From: Eplankton Date: 2021/8/12
+//From: Eplankton Date: 2021/8/12(Start date)
+const char version[] = "1.0.7";
+const char *user_sign = ">>";
+
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
@@ -9,7 +12,6 @@
 
 int main()
 {
-    const char *sig = ">>";
     time_t rawtime;
     struct tm *info;
     time(&rawtime);
@@ -22,15 +24,11 @@ int main()
 
     while (key >= 0)
     {
-        for (i = 0; i < 64; i++)
-        {
-            userInput[i] = '\0';
-        }
-
+        memset(userInput, '\0', 64 * sizeof(char));
         i = 0;
         key = 0;
 
-        printf("\n\033[33;1m%s \033[0m", sig);
+        printf("\n\033[33;1m%s \033[0m", user_sign);
         scanf("%s", userInput);
         key = search(userInput);
 
@@ -98,6 +96,13 @@ int main()
             break;
         case 21:
             matrixApproximate(userInput);
+            break;
+        case 22:
+            matrixRank(userInput);
+            break;
+        case 23:
+            matrixEchelon(userInput);
+            break;
             //Add cases here.
         case 0: //Confirm the order.
             while (getchar() != '\n')
@@ -105,7 +110,6 @@ int main()
             break;
         case -1: //Exit the process(-1) {exit() & quit()}
             break;
-
         case 101:
             fileDelete(userInput);
             break;

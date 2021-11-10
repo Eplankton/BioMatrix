@@ -50,34 +50,10 @@ double laplace_expansion(double matrix[20][20], int r, int c, int order)
     return result;
 }
 
+
+
 //From: https://zhuanlan.zhihu.com/p/312177505
-//#include <stdio.h>
-//#include <math.h>
-
-/* int rank(double matrix[20][20], int r, int c);
 double standard_echelon(double matrix[20][20], int r, int c, int x, int y);
-void show_standard_echelon(double matrix[20][20], int r, int c);
-
-int main()
-{
-    double matrix[20][20];
-    int i, j, r, c;
-
-    printf("row:");
-    scanf("%d", &r);
-    printf("cloumn:");
-    scanf("%d", &c);
-    printf("matrix:\n");
-    for (i = 0; i < r; i++)
-        for (j = 0; j < c; j++)
-            scanf("%f", &matrix[i][j]);
-
-    printf("rank = %d.\n", rank(matrix, r, c));
-    printf("fuck:\n");
-    show_standard_echelon(matrix, r, c);
-
-    return 0;
-}
 
 int rank(double matrix[20][20], int r, int c)
 {
@@ -173,25 +149,3 @@ double standard_echelon(double matrix[20][20], int r, int c, int x, int y)
 
     return result;
 }
-
-void show_standard_echelon(double matrix[20][20], int r, int c)
-{
-    double echelon_matrix[20][20];
-    int i, j;
-
-    for (i = 0; i < r; i++)
-        for (j = 0; j < c; j++)
-            echelon_matrix[i][j] = standard_echelon(matrix, r, c, i, j);
-
-    for (i = 0; i < r; i++)
-    {
-        for (j = 0; j < c; j++)
-        {
-            if (fabs(echelon_matrix[i][j]) < 0.0005)
-                echelon_matrix[i][j] = fabs(echelon_matrix[i][j]);
-            printf("%.3f\t", echelon_matrix[i][j]);
-        }
-        printf("\n");
-    }
-} 
-*/
