@@ -99,7 +99,7 @@ int search(char *userInput)
 void test()
 {
 
-    printf("\n[\033[32;1mSuccess\033[0m]\033[36;1m Biomatrix\033[0m (v%s) is running on your environment!\n", version);
+    printf("\n[\033[32;1mSuccess\033[0m]\033[36;1m Biomatrix\033[0m (v%s) is running on your environment!\n\n", version);
     int i = 0;
     FILE *fp = NULL;
     char buff[128];

@@ -30,7 +30,7 @@ mat.inv()#12
 mat.del()#19
 mat.approx()#21
 mat.rank()#22
-mat.ech()#23
+mat.eche()#23
 
 vector.In()#4
 vector.Out()#5

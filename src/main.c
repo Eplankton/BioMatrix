@@ -1,7 +1,6 @@
 //From: Eplankton Date: 2021/8/12(Start date)
 const char version[] = "1.0.7";
-const char *user_sign = ">>";
-
+const char *UserInput_Sign = ">>";
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
@@ -28,7 +27,7 @@ int main()
         i = 0;
         key = 0;
 
-        printf("\n\033[33;1m%s \033[0m", user_sign);
+        printf("\n\033[33;1m%s \033[0m", UserInput_Sign);
         scanf("%s", userInput);
         key = search(userInput);
 
@@ -109,6 +108,7 @@ int main()
                 ;
             break;
         case -1: //Exit the process(-1) {exit() & quit()}
+            printf("\n[\033[43;1m\033[30;1mEXIT\033[0m\033[0m]: 0\n\n");
             break;
         case 101:
             fileDelete(userInput);
