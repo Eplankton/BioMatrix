@@ -1,5 +1,5 @@
-//From: Eplankton Date: 2021/8/12(Start date)
-const char version[] = "1.0.7";
+//From: Eplankton Date: 2021/8/12(Start date) 2022/1/3(Last change)
+const char version[] = "1.0.8";
 const char *UserInput_Sign = ">>";
 #include <stdio.h>
 #include <string.h>
