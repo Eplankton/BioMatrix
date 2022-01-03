@@ -64,6 +64,10 @@ mat.det(B) mat.det(B^T)
 mat.det(I[5]) 
 mat.det(r%I[5])
 
+file.del(value) file.del(matrix) file.del(matrixstream)
+
+quit()
+
 mat.in((BIG|E),10,20):
 2 3 5 7 11 13 17 19 23 29 1 0 0 0 0 0 0 0 0 0
 31 37 41 43 47 53 59 61 67 71 0 1 0 0 0 0 0 0 0 0
@@ -76,8 +80,3 @@ mat.in((BIG|E),10,20):
 419 421 431 433 439 443 449 457 461 463 0 0 0 0 0 0 0 0 1 0
 467 479 487 491 499 503 509 521 523 541 0 0 0 0 0 0 0 0 0 1
 mat.eche((BIG|E),(BIG^-1|E))
-
-file.del(value) file.del(matrix) file.del(matrixstream)
-
-quit()
-
